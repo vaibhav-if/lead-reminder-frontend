@@ -63,7 +63,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-light-gray p-4">
-      <h1 className="text-dark-blue text-3xl mb-4">Leads Reminders</h1>
+      <h1 className="text-dark-blue text-3xl mb-4">Leads Management</h1>
 
       <div className="mb-4 flex flex-col md:flex-row gap-2">
         <input
@@ -132,25 +132,101 @@ function App() {
         <tbody>
           {leads.map((lead, index) => (
             <tr key={lead.id}>
-              <td className="border px-4 py-2">{lead.name}</td>
-              <td className="border px-4 py-2">{lead.mobile}</td>
-              <td className="border px-4 py-2">{lead.email}</td>
-              <td className="border px-4 py-2">{lead.meeting_date}</td>
-              <td className="border px-4 py-2">{lead.meeting_notes}</td>
-              <td className="border px-4 py-2">
-                <button
-                  onClick={() => handleEditLead(index)}
-                  className="bg-cyan text-white p-1 rounded mr-1"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteLead(lead.id)}
-                  className="bg-pink-red text-white p-1 rounded"
-                >
-                  Delete
-                </button>
-              </td>
+              {editIndex === index ? (
+                <>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="text"
+                      value={newLead.name}
+                      onChange={(e) =>
+                        setNewLead({ ...newLead, name: e.target.value })
+                      }
+                      className="border border-gray-300 p-1 rounded"
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="text"
+                      value={newLead.mobile}
+                      onChange={(e) =>
+                        setNewLead({ ...newLead, mobile: e.target.value })
+                      }
+                      className="border border-gray-300 p-1 rounded"
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="email"
+                      value={newLead.email}
+                      onChange={(e) =>
+                        setNewLead({ ...newLead, email: e.target.value })
+                      }
+                      className="border border-gray-300 p-1 rounded"
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="date"
+                      value={newLead.meeting_date}
+                      onChange={(e) =>
+                        setNewLead({ ...newLead, meeting_date: e.target.value })
+                      }
+                      className="border border-gray-300 p-1 rounded"
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <input
+                      type="text"
+                      value={newLead.meeting_notes}
+                      onChange={(e) =>
+                        setNewLead({
+                          ...newLead,
+                          meeting_notes: e.target.value,
+                        })
+                      }
+                      className="border border-gray-300 p-1 rounded"
+                    />
+                  </td>
+                  <td className="border px-4 py-2">
+                    <button
+                      onClick={() => {
+                        handleAddLead();
+                      }}
+                      className="bg-cyan text-white p-1 rounded mr-1"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => setEditIndex(null)}
+                      className="bg-pink-red text-white p-1 rounded"
+                    >
+                      Cancel
+                    </button>
+                  </td>
+                </>
+              ) : (
+                <>
+                  <td className="border px-4 py-2">{lead.name}</td>
+                  <td className="border px-4 py-2">{lead.mobile}</td>
+                  <td className="border px-4 py-2">{lead.email}</td>
+                  <td className="border px-4 py-2">{lead.meeting_date}</td>
+                  <td className="border px-4 py-2">{lead.meeting_notes}</td>
+                  <td className="border px-4 py-2">
+                    <button
+                      onClick={() => handleEditLead(index)}
+                      className="bg-cyan text-white p-1 rounded mr-1"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteLead(lead.id)}
+                      className="bg-pink-red text-white p-1 rounded"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>
