@@ -59,6 +59,17 @@ function App() {
     setEditIndex(index);
   };
 
+  const handleCancel = () => {
+    setNewLead({
+      name: "",
+      mobile: "",
+      email: "",
+      meeting_date: "",
+      meeting_notes: "",
+    });
+    setEditIndex(null);
+  };
+
   const handleDeleteLead = (id) => {
     // Soft deleting leads by marking them inactive
     setLeads(
@@ -89,7 +100,7 @@ function App() {
 
       <nav className="bg-dark-blue text-white p-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-xl font-bold">Lead Reminders</h1>
+          <h1 className="text-3xl font-bold">Lead Reminders</h1>
           <div className="space-x-4">
             <a href="#about" className="hover:text-cyan">
               About
@@ -106,7 +117,7 @@ function App() {
 
       <main id="main-content" className="flex-grow p-4">
         <h2 className="text-dark-blue text-2xl mb-4">Add Leads Form</h2>
-        <div className="mb-4 flex flex-col md:flex-row gap-2">
+        <div className="mb-20 flex flex-col md:flex-row gap-2">
           <input
             type="text"
             name="name"
@@ -160,23 +171,26 @@ function App() {
         </div>
 
         {/* Search and Filter Section */}
-        <div className="mb-4 flex gap-2">
-          <input
-            type="text"
-            placeholder="Search by Name"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="border border-gray-300 p-2 rounded"
-          />
-          <select
-            value={filterActive}
-            onChange={(e) => setFilterActive(e.target.value)}
-            className="border border-gray-300 p-2 rounded"
-          >
-            <option value="all">All Leads</option>
-            <option value="active">Active Leads</option>
-            <option value="inactive">Inactive Leads</option>
-          </select>
+        <div className="mb-2 flex justify-between items-center">
+          <h2 className="text-dark-blue text-2xl">Leads Records</h2>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Search by Name"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="border border-gray-300 p-2 rounded"
+            />
+            <select
+              value={filterActive}
+              onChange={(e) => setFilterActive(e.target.value)}
+              className="border border-gray-300 p-2 rounded"
+            >
+              <option value="all">All Leads</option>
+              <option value="active">Active Leads</option>
+              <option value="inactive">Inactive Leads</option>
+            </select>
+          </div>
         </div>
 
         <table className="min-w-full border border-gray-300">
@@ -188,7 +202,6 @@ function App() {
               <th className="border px-4 py-2">Meeting Date</th>
               <th className="border px-4 py-2">Meeting Notes</th>
               <th className="border px-4 py-2">Actions</th>
-              <th className="border px-4 py-2">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -262,7 +275,7 @@ function App() {
                         Save
                       </button>
                       <button
-                        onClick={() => setEditIndex(null)}
+                        onClick={handleCancel}
                         className="bg-pink-red text-white p-1 rounded"
                       >
                         Cancel
@@ -328,13 +341,6 @@ function App() {
                     </td>
                   </>
                 )}
-                <td
-                  className={`border px=4 py=2 ${
-                    lead.is_active ? "text-green" : "text-red"
-                  }`}
-                >
-                  {lead.is_active ? "Active" : "Inactive"}
-                </td>
               </tr>
             ))}
           </tbody>
