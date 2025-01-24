@@ -23,6 +23,8 @@ function App() {
   });
 
   const [editIndex, setEditIndex] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterActive, setFilterActive] = useState("all"); // 'all', 'active', 'inactive'
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,12 +60,30 @@ function App() {
   };
 
   const handleDeleteLead = (id) => {
-    setLeads(leads.filter((lead) => lead.id !== id));
+    // Soft deleting leads by marking them inactive
+    setLeads(
+      leads.map((lead) =>
+        lead.id === id ? { ...lead, is_active: false } : lead
+      )
+    );
   };
+
+  const filteredLeads = leads.filter((lead) => {
+    const isActiveFilter =
+      filterActive === "active"
+        ? lead.is_active
+        : filterActive === "inactive"
+        ? !lead.is_active
+        : true;
+    return (
+      lead.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      isActiveFilter
+    );
+  });
 
   return (
     <div className="min-h-screen bg-light-gray p-4">
-      <h1 className="text-dark-blue text-3xl mb-4">Leads Management</h1>
+      <h1 className="text-dark-blue text-3xl mb-4">Lead Reminders</h1>
 
       <div className="mb-4 flex flex-col md:flex-row gap-2">
         <input
@@ -118,6 +138,26 @@ function App() {
         </button>
       </div>
 
+      {/* Search and Filter Section */}
+      <div className="mb-4 flex gap-2">
+        <input
+          type="text"
+          placeholder="Search by Name"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="border border-gray-300 p-2 rounded"
+        />
+        <select
+          value={filterActive}
+          onChange={(e) => setFilterActive(e.target.value)}
+          className="border border-gray-300 p-2 rounded"
+        >
+          <option value="all">All Leads</option>
+          <option value="active">Active Leads</option>
+          <option value="inactive">Inactive Leads</option>
+        </select>
+      </div>
+
       <table className="min-w-full border border-gray-300">
         <thead>
           <tr>
@@ -127,10 +167,11 @@ function App() {
             <th className="border px-4 py-2">Meeting Date</th>
             <th className="border px-4 py-2">Meeting Notes</th>
             <th className="border px-4 py-2">Actions</th>
+            <th className="border px-4 py-2">Status</th>
           </tr>
         </thead>
         <tbody>
-          {leads.map((lead, index) => (
+          {filteredLeads.map((lead, index) => (
             <tr key={lead.id}>
               {editIndex === index ? (
                 <>
@@ -206,27 +247,71 @@ function App() {
                 </>
               ) : (
                 <>
-                  <td className="border px-4 py-2">{lead.name}</td>
-                  <td className="border px-4 py-2">{lead.mobile}</td>
-                  <td className="border px-4 py-2">{lead.email}</td>
-                  <td className="border px-4 py-2">{lead.meeting_date}</td>
-                  <td className="border px-4 py-2">{lead.meeting_notes}</td>
-                  <td className="border px-4 py-2">
-                    <button
-                      onClick={() => handleEditLead(index)}
-                      className="bg-cyan text-white p-1 rounded mr-1"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDeleteLead(lead.id)}
-                      className="bg-pink-red text-white p-1 rounded"
-                    >
-                      Delete
-                    </button>
+                  <td
+                    className={`border px-4 py-2 ${
+                      lead.is_active ? "" : "line-through"
+                    }`}
+                  >
+                    {lead.name}
+                  </td>
+                  <td
+                    className={`border px-4 py-2 ${
+                      lead.is_active ? "" : "line-through"
+                    }`}
+                  >
+                    {lead.mobile}
+                  </td>
+                  <td
+                    className={`border px-4 py-2 ${
+                      lead.is_active ? "" : "line-through"
+                    }`}
+                  >
+                    {lead.email}
+                  </td>
+                  <td
+                    className={`border px-4 py-2 ${
+                      lead.is_active ? "" : "line-through"
+                    }`}
+                  >
+                    {lead.meeting_date}
+                  </td>
+                  <td
+                    className={`border px-4 py-2 ${
+                      lead.is_active ? "" : "line-through"
+                    }`}
+                  >
+                    {lead.meeting_notes}
+                  </td>
+                  <td className={`border px-4 py-2`}>
+                    {lead.is_active ? (
+                      <>
+                        <button
+                          onClick={() => handleEditLead(index)}
+                          className="bg-cyan text-white p-1 rounded mr-1"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteLead(lead.id)}
+                          className="bg-pink-red text-white p-1 rounded"
+                        >
+                          Deactivate
+                        </button>
+                      </>
+                    ) : (
+                      <>Inactive</>
+                    )}
                   </td>
                 </>
               )}
+              {/* Show status */}
+              <td
+                className={`border px-4 py-2 ${
+                  lead.is_active ? "text-green" : "text-red"
+                }`}
+              >
+                {lead.is_active ? "Active" : "Inactive"}
+              </td>
             </tr>
           ))}
         </tbody>
