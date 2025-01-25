@@ -1,19 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "./App.css";
 
-function App() {
-  const [leads, setLeads] = useState([
-    {
-      id: 1,
-      name: "abc",
-      mobile: "1234",
-      email: "abc@abc.com",
-      meeting_date: "2025-02-10",
-      meeting_notes: "Some notes",
-      is_active: true,
-    },
-  ]);
+// console.log(import.meta.env);
+// const SERVER_PORT = import.meta.env.SERVER_PORT;
+const SERVER_URL = `http://localhost:3000`;
 
+function App() {
+  const [leads, setLeads] = useState([]);
   const [newLead, setNewLead] = useState({
     name: "",
     mobile: "",
@@ -21,37 +15,57 @@ function App() {
     meeting_date: "",
     meeting_notes: "",
   });
-
   const [editIndex, setEditIndex] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterActive, setFilterActive] = useState("active"); // 'all', 'active', 'inactive'
+  const [filterActive, setFilterActive] = useState("active");
+
+  useEffect(() => {
+    fetchLeads();
+  }, []);
+
+  const fetchLeads = async () => {
+    try {
+      const response = await axios.get(`${SERVER_URL}/leads`);
+      setLeads(response.data);
+    } catch (error) {
+      console.error("Error fetching leads:", error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewLead((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAddLead = () => {
+  const handleAddLead = async () => {
     if (editIndex !== null) {
-      // Edit existing lead
-      const updatedLeads = [...leads];
-      updatedLeads[editIndex] = { ...updatedLeads[editIndex], ...newLead };
-      setLeads(updatedLeads);
+      await updateLead(leads[editIndex].id, newLead);
       setEditIndex(null);
     } else {
-      // Add new lead
-      setLeads((prev) => [
-        ...prev,
-        { id: prev.length + 1, ...newLead, is_active: true },
-      ]);
+      // Add new lead if editIndex is null
+      await createLead(newLead);
     }
-    setNewLead({
-      name: "",
-      mobile: "",
-      email: "",
-      meeting_date: "",
-      meeting_notes: "",
-    });
+    resetNewLead();
+    fetchLeads(); // Refresh leads after adding/updating
+  };
+
+  const createLead = async (lead) => {
+    try {
+      await axios.post(`${SERVER_URL}/leads`, {
+        ...lead,
+        is_active: true,
+      });
+    } catch (error) {
+      console.error("Error adding lead:", error);
+    }
+  };
+
+  const updateLead = async (id, lead) => {
+    try {
+      await axios.put(`${SERVER_URL}/leads/${id}`, lead);
+    } catch (error) {
+      console.error("Error updating lead:", error);
+    }
   };
 
   const handleEditLead = (index) => {
@@ -60,6 +74,11 @@ function App() {
   };
 
   const handleCancel = () => {
+    resetNewLead();
+    setEditIndex(null);
+  };
+
+  const resetNewLead = () => {
     setNewLead({
       name: "",
       mobile: "",
@@ -67,16 +86,18 @@ function App() {
       meeting_date: "",
       meeting_notes: "",
     });
-    setEditIndex(null);
   };
 
-  const handleDeleteLead = (id) => {
-    // Soft deleting leads by marking them inactive
-    setLeads(
-      leads.map((lead) =>
-        lead.id === id ? { ...lead, is_active: false } : lead
-      )
-    );
+  const handleDeleteLead = async (id) => {
+    try {
+      // Soft delete by marking the lead inactive
+      await axios.put(`${SERVER_URL}/leads/${id}`, {
+        is_active: false,
+      });
+      fetchLeads(); // Refresh leads after deletion
+    } catch (error) {
+      console.error("Error deleting lead:", error);
+    }
   };
 
   const filteredLeads = leads.filter((lead) => {
@@ -86,6 +107,7 @@ function App() {
         : filterActive === "inactive"
         ? !lead.is_active
         : true;
+
     return (
       lead.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
       isActiveFilter
