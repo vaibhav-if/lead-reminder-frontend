@@ -13,6 +13,7 @@ function UserDetails() {
     const updatedUser = { ...user, name, email };
 
     try {
+      // refactor localhost and make this a put request to update user
       await axios.post("http://localhost:3000/users", updatedUser); // Save new user to backend
       setUser(updatedUser);
       alert("Details saved!");

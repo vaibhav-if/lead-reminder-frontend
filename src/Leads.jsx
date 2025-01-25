@@ -13,9 +13,13 @@ function Leads() {
     meeting_date: "",
     meeting_notes: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
   const [editIndex, setEditIndex] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterActive, setFilterActive] = useState("active");
+
+  // Regex pattern for validating Indian mobile numbers (Refactor to common file)
+  const mobilePattern = /^[6-9]\d{9}$/;
 
   useEffect(() => {
     fetchLeads();
@@ -33,9 +37,36 @@ function Leads() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewLead((prev) => ({ ...prev, [name]: value }));
+    setErrorMessage("");
   };
 
   const handleAddLead = async () => {
+    const { name, mobile, meeting_date, meeting_notes } = newLead;
+    if (!name) {
+      setErrorMessage("Name is mandatory.");
+      return;
+    }
+
+    if (!mobile) {
+      setErrorMessage("Mobile number is mandatory.");
+      return;
+    }
+
+    if (!mobilePattern.test(mobile)) {
+      setErrorMessage("Please enter a valid Indian mobile number.");
+      return;
+    }
+
+    if (!meeting_date) {
+      setErrorMessage("Meeting date is mandatory.");
+      return;
+    }
+
+    if (meeting_notes.length > 50) {
+      setErrorMessage("Meeting notes cannot exceed 50 characters.");
+      return;
+    }
+
     if (editIndex !== null) {
       await updateLead(leads[editIndex].id, newLead);
       setEditIndex(null);
@@ -115,7 +146,7 @@ function Leads() {
   return (
     <div>
       <h2 className="text-dark-blue text-2xl mb-4">Add Leads Form</h2>
-      <div className="mb-20 flex flex-col md:flex-row gap-2">
+      <div className="flex flex-col md:flex-row gap-2">
         <input
           type="text"
           name="name"
@@ -141,7 +172,6 @@ function Leads() {
           value={newLead.email}
           onChange={handleChange}
           className="border border-gray-300 p-2 rounded"
-          required
         />
         <input
           type="date"
@@ -153,9 +183,10 @@ function Leads() {
         <input
           type="text"
           name="meeting_notes"
-          placeholder="Meeting Notes"
+          placeholder="Meeting Notes (max 50 characters)"
           value={newLead.meeting_notes}
           onChange={handleChange}
+          maxLength={50}
           className="border border-gray-300 p-2 rounded"
         />
         <button
@@ -167,9 +198,10 @@ function Leads() {
           {editIndex !== null ? "Update Lead" : "Add Lead"}
         </button>
       </div>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
 
       {/* Search and Filter Section */}
-      <div className="mb-2 flex justify-between items-center">
+      <div className="mb-2 mt-20 flex justify-between items-center">
         <h2 className="text-dark-blue text-2xl">Leads Records</h2>
         <div className="flex gap-2">
           <input

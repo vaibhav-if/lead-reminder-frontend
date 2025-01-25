@@ -12,13 +12,24 @@ function Login() {
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [captchaVerified, setCaptchaVerified] = useState(false);
+  const [captchaVerified, setCaptchaVerified] = useState(true); // Set to false to enable captcha verification and update site key
   const recaptchaRef = useRef();
   const navigate = useNavigate();
 
+  // Regex pattern for validating Indian mobile numbers
+  const mobilePattern = /^[6-9]\d{9}$/;
+
   const handleLogin = async () => {
+    if (!mobile) {
+      setErrorMessage("Mobile number is mandatory.");
+      return;
+    }
+    if (!mobilePattern.test(mobile)) {
+      setErrorMessage("Please enter a valid Indian mobile number.");
+      return;
+    }
     if (!captchaVerified) {
-      alert("Please verify that you are not a robot.");
+      setErrorMessage("Please verify that you are not a robot.");
       return;
     }
     if (isOtpSent) {
@@ -39,6 +50,7 @@ function Login() {
   const handleCaptchaChange = (value) => {
     if (value) {
       setCaptchaVerified(true);
+      setErrorMessage("");
     }
   };
 
@@ -49,7 +61,13 @@ function Login() {
         type="text"
         placeholder="Enter Mobile Number"
         value={mobile}
-        onChange={(e) => setMobile(e.target.value)}
+        onChange={(e) => {
+          setMobile(e.target.value);
+          setErrorMessage("");
+        }}
+        className={`input ${
+          !mobilePattern.test(mobile) && mobile ? "input-error" : ""
+        }`}
       />
       {isOtpSent && (
         <>
@@ -67,9 +85,9 @@ function Login() {
         onChange={handleCaptchaChange}
       />
       <button onClick={handleLogin}>
-        {isOtpSent ? "Verify OTP" : "Send OTP"}
+        {isOtpSent ? "Verify OTP & Login" : "Send OTP"}
       </button>
-      {errorMessage && <p>{errorMessage}</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
     </div>
   );
 }
