@@ -1,8 +1,8 @@
-// Login.jsx
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useUser } from "./UserContext";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const dummyOTP = "123456"; // Dummy OTP for authentication
 
@@ -12,9 +12,15 @@ function Login() {
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [captchaVerified, setCaptchaVerified] = useState(false);
+  const recaptchaRef = useRef();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    if (!captchaVerified) {
+      alert("Please verify that you are not a robot.");
+      return;
+    }
     if (isOtpSent) {
       if (otp === dummyOTP) {
         await fetchUser(mobile);
@@ -27,6 +33,12 @@ function Login() {
       // TODO: Send OTP logic here (dummy implementation)
       console.log("Sending OTP to:", mobile);
       setIsOtpSent(true);
+    }
+  };
+
+  const handleCaptchaChange = (value) => {
+    if (value) {
+      setCaptchaVerified(true);
     }
   };
 
@@ -49,6 +61,11 @@ function Login() {
           />
         </>
       )}
+      <ReCAPTCHA
+        ref={recaptchaRef}
+        sitekey={process.env.REACT_APP_SITE_KEY}
+        onChange={handleCaptchaChange}
+      />
       <button onClick={handleLogin}>
         {isOtpSent ? "Verify OTP" : "Send OTP"}
       </button>
