@@ -1,12 +1,14 @@
 // UserDetails.jsx
 import { useState } from "react";
 import { useUser } from "./UserContext";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function UserDetails() {
-  const { user, setUser } = useUser();
+  const { user, setUser, logout } = useUser();
   const [name, setName] = useState(user.name || "");
   const [email, setEmail] = useState(user.email || "");
+  const navigate = useNavigate();
 
   const handleSaveDetails = async () => {
     const updatedUser = { ...user, name, email };
@@ -18,6 +20,11 @@ function UserDetails() {
     } catch (error) {
       console.error("Error saving user details:", error);
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
   };
 
   return (
@@ -42,6 +49,9 @@ function UserDetails() {
         onChange={(e) => setEmail(e.target.value)}
       />
       <button onClick={handleSaveDetails}>Save Details</button>
+      <button onClick={handleLogout} className="logout-button">
+        Logout
+      </button>
     </div>
   );
 }
