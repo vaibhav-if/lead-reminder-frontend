@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
+import { useUser } from "./UserContext";
 import axios from "axios";
 
 const SERVER_PORT = process.env.SERVER_PORT;
 const SERVER_URL = `http://localhost:${SERVER_PORT}`;
 
 function Leads() {
+  const { user } = useUser();
   const [leads, setLeads] = useState([]);
   const [newLead, setNewLead] = useState({
+    id: null,
     name: "",
     mobile: "",
     email: "",
     meeting_date: "",
     meeting_notes: "",
+    userId: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [editIndex, setEditIndex] = useState(null);
@@ -27,7 +31,13 @@ function Leads() {
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`${SERVER_URL}/leads`);
+      const userId = user?.id;
+      console.log(user);
+      if (!userId) {
+        console.error("User ID is not available.");
+        return;
+      }
+      const response = await axios.get(`${SERVER_URL}/users/${userId}/leads`);
       setLeads(response.data);
     } catch (error) {
       console.error("Error fetching leads:", error);
@@ -67,32 +77,41 @@ function Leads() {
       return;
     }
 
+    const userId = user?.id;
+    if (!userId) {
+      console.error("User ID is not available.");
+      return;
+    }
+
     if (editIndex !== null) {
-      await updateLead(leads[editIndex].id, newLead);
+      await updateLead(leads[editIndex].id, newLead, userId);
       setEditIndex(null);
     } else {
       // Add new lead if editIndex is null
-      await createLead(newLead);
+      await createLead(newLead, userId);
     }
     resetNewLead();
     fetchLeads(); // Refresh leads after adding/updating
   };
 
-  const createLead = async (lead) => {
+  const createLead = async (lead, userId) => {
     try {
-      await axios.post(`${SERVER_URL}/leads`, {
-        ...lead,
-        is_active: true,
-      });
+      await axios.post(`${SERVER_URL}/leads`, { ...lead, userId });
     } catch (error) {
+      setErrorMessage(
+        "Error adding lead, please make sure to enter unique phone numbers"
+      );
       console.error("Error adding lead:", error);
     }
   };
 
-  const updateLead = async (id, lead) => {
+  const updateLead = async (id, lead, userId) => {
     try {
-      await axios.put(`${SERVER_URL}/leads/${id}`, lead);
+      await axios.put(`${SERVER_URL}/leads/${id}`, { ...lead, userId });
     } catch (error) {
+      setErrorMessage(
+        "Error updating lead, please make sure to enter unique phone numbers"
+      );
       console.error("Error updating lead:", error);
     }
   };
@@ -120,9 +139,7 @@ function Leads() {
   const handleDeleteLead = async (id) => {
     try {
       // Soft delete by marking the lead inactive
-      await axios.put(`${SERVER_URL}/leads/${id}`, {
-        is_active: false,
-      });
+      await axios.patch(`${SERVER_URL}/leads/${id}/deactivate`);
       fetchLeads(); // Refresh leads after deletion
     } catch (error) {
       console.error("Error deleting lead:", error);

@@ -7,7 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 const dummyOTP = "123456"; // Dummy OTP for authentication
 
 function Login() {
-  const { setUser, fetchUser } = useUser();
+  const { user, fetchUser } = useUser();
   const [mobile, setMobile] = useState("");
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -34,14 +34,20 @@ function Login() {
     }
     if (isOtpSent) {
       if (otp === dummyOTP) {
-        await fetchUser(mobile);
-        Cookies.set("user", JSON.stringify({ mobile }), { expires: 7 });
-        navigate("/");
+        const fetchedUser = await fetchUser(mobile);
+        if (fetchedUser) {
+          // TODO Change cookies logic to send tokens
+          Cookies.set("user", JSON.stringify({ ...fetchedUser }), { expires: 7 });
+          navigate("/");
+        } else {
+          setErrorMessage("Something went wrong. Please register again.");
+          navigate("/login");
+        }
       } else {
         setErrorMessage("Invalid OTP");
       }
     } else {
-      // TODO: Send OTP logic here (dummy implementation)
+      // TODO Send OTP logic here (dummy implementation)
       console.log("Sending OTP to:", mobile);
       setIsOtpSent(true);
     }

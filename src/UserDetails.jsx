@@ -2,6 +2,10 @@ import { useState } from "react";
 import { useUser } from "./UserContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
+
+const SERVER_PORT = process.env.SERVER_PORT;
+const SERVER_URL = `http://localhost:${SERVER_PORT}`;
 
 function UserDetails() {
   const { user, setUser, logout } = useUser();
@@ -13,10 +17,15 @@ function UserDetails() {
     const updatedUser = { ...user, name, email };
 
     try {
-      // refactor localhost and make this a put request to update user
-      await axios.post("http://localhost:3000/users", updatedUser); // Save new user to backend
-      setUser(updatedUser);
+      const response = await axios.put(
+        `${SERVER_URL}/users/${user?.id}`,
+        updatedUser
+      );
+      setUser(response.data);
+      // TODO Change cookies logic to send tokens
+      Cookies.set("user", JSON.stringify(response.data), { expires: 7 });
       alert("Details saved!");
+      navigate("/");
     } catch (error) {
       console.error("Error saving user details:", error);
     }
