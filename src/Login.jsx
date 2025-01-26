@@ -3,8 +3,12 @@ import { useUser } from "./UserContext";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
 
 const dummyOTP = "123456"; // Dummy OTP for authentication
+
+const SERVER_PORT = process.env.SERVER_PORT;
+const SERVER_URL = `http://localhost:${SERVER_PORT}`;
 
 function Login() {
   const { user, fetchUser } = useUser();
@@ -12,7 +16,7 @@ function Login() {
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [captchaVerified, setCaptchaVerified] = useState(true); // Set to false to enable captcha verification and update site key
+  const [captchaVerified, setCaptchaVerified] = useState(false); // Set to false to enable captcha verification and update site key
   const recaptchaRef = useRef();
   const navigate = useNavigate();
 
@@ -33,23 +37,41 @@ function Login() {
       return;
     }
     if (isOtpSent) {
-      if (otp === dummyOTP) {
+      try {
+        await axios.post(`${SERVER_URL}/verify-otp`, {
+          mobile,
+          otp,
+        });
         const fetchedUser = await fetchUser(mobile);
         if (fetchedUser) {
-          // TODO Change cookies logic to send tokens
-          Cookies.set("user", JSON.stringify({ ...fetchedUser }), { expires: 7 });
+          Cookies.set("user", JSON.stringify({ ...fetchedUser }), {
+            expires: 7,
+          });
           navigate("/");
         } else {
           setErrorMessage("Something went wrong. Please register again.");
           navigate("/login");
         }
-      } else {
-        setErrorMessage("Invalid OTP");
+      } catch (error) {
+        console.error("Error verifying OTP:", error);
+        setErrorMessage(
+          "An error occurred while verifying OTP. Please enter correct OTP."
+        );
       }
     } else {
-      // TODO Send OTP logic here (dummy implementation)
-      console.log("Sending OTP to:", mobile);
-      setIsOtpSent(true);
+      const recaptchaToken = await recaptchaRef.current.getValue();
+      recaptchaRef.current.reset();
+
+      try {
+        await axios.post(`${SERVER_URL}/send-otp`, {
+          mobile,
+          recaptchaToken,
+        });
+        setIsOtpSent(true);
+      } catch (error) {
+        console.error("Error sending OTP:", error);
+        setErrorMessage("An error occurred while sending OTP.");
+      }
     }
   };
 
