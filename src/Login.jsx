@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import axios from "axios";
 
-const dummyOTP = "123456"; // Dummy OTP for authentication
-
 const SERVER_PORT = process.env.SERVER_PORT;
 const SERVER_URL = `http://localhost:${SERVER_PORT}`;
 
@@ -17,6 +15,8 @@ function Login() {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [captchaVerified, setCaptchaVerified] = useState(false); // Set to false to enable captcha verification and update site key
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
   const recaptchaRef = useRef();
   const navigate = useNavigate();
 
@@ -37,7 +37,12 @@ function Login() {
       return;
     }
     if (isOtpSent) {
+      setIsVerifyingOtp(true);
       try {
+        if (!otp) {
+          setErrorMessage("Please enter the verification code.");
+          return;
+        }
         await axios.post(`${SERVER_URL}/verify-otp`, {
           mobile,
           otp,
@@ -57,12 +62,14 @@ function Login() {
         setErrorMessage(
           "An error occurred while verifying OTP. Please enter correct OTP."
         );
+      } finally {
+        recaptchaRef.current.reset();
+        setIsVerifyingOtp(false);
       }
     } else {
-      const recaptchaToken = await recaptchaRef.current.getValue();
-      recaptchaRef.current.reset();
-
+      setIsSendingOtp(true);
       try {
+        const recaptchaToken = await recaptchaRef.current.getValue();
         await axios.post(`${SERVER_URL}/send-otp`, {
           mobile,
           recaptchaToken,
@@ -71,6 +78,8 @@ function Login() {
       } catch (error) {
         console.error("Error sending OTP:", error);
         setErrorMessage("An error occurred while sending OTP.");
+      } finally {
+        setIsSendingOtp(false);
       }
     }
   };
@@ -112,8 +121,14 @@ function Login() {
         sitekey={process.env.REACT_APP_SITE_KEY}
         onChange={handleCaptchaChange}
       />
-      <button onClick={handleLogin}>
-        {isOtpSent ? "Verify OTP & Login" : "Send OTP"}
+      <button onClick={handleLogin} disabled={isSendingOtp || isVerifyingOtp}>
+        {isOtpSent
+          ? isVerifyingOtp
+            ? "Verifying..."
+            : "Verify OTP & Login"
+          : isSendingOtp
+          ? "Sending..."
+          : "Send OTP"}
       </button>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
     </div>
