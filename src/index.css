@@ -7,6 +7,8 @@
   --primary-color: #a2c549;
   --secondary-color: #a9d0af;
   --accent-color: #87b319;
+  --secondary-color-light: #a9d0af33; /* 20% transparency */
+  --text-color-light: #191f0a80; /* 50% transparency */
 }
 
 .dark {
@@ -15,6 +17,8 @@
   --primary-color: #93b63a;
   --secondary-color: #2f5635;
   --accent-color: #bae64c;
+  --secondary-color-light: #2f563533; /* 20% transparency */
+  --text-color-light: #eff5e080; /* 50% transparency */
 }
 
 @theme inline {
@@ -98,4 +102,43 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+input,
+textarea,
+select {
+  border: 1px solid var(--secondary-color);
+  color: var(--text-color);
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+input::placeholder,
+textarea::placeholder,
+select::placeholder,
+input[type="date"]::placeholder {
+  color: var(--secondary-color);
+  opacity: 0.8;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--accent-color);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 5px rgba(135, 179, 25, 0.5); /* Soft glow effect */
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+  border-color: var(--accent-color);
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: var(--secondary-color-light);
+  color: var(--text-color-light);
+  cursor: not-allowed;
 }
