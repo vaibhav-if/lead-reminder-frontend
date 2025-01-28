@@ -276,7 +276,7 @@ function Leads() {
               <tr key={lead.id}>
                 {editIndex === index ? (
                   <>
-                    <td className="p-4 border-b border-slate-200 py-5">
+                    <td className="p-4 border-b border-slate-200">
                       <input
                         type="text"
                         value={newLead.name}
@@ -286,7 +286,7 @@ function Leads() {
                         className=""
                       />
                     </td>
-                    <td className="p-4 border-b border-slate-200 py-5">
+                    <td className="p-4 border-b border-slate-200">
                       <input
                         type="text"
                         value={newLead.mobile}
@@ -296,7 +296,7 @@ function Leads() {
                         className=""
                       />
                     </td>
-                    <td className="p-4 border-b border-slate-200 py-5">
+                    <td className="p-4 border-b border-slate-200">
                       <input
                         type="email"
                         value={newLead.email}
@@ -306,7 +306,7 @@ function Leads() {
                         className=""
                       />
                     </td>
-                    <td className="p-4 border-b border-slate-200 py-5">
+                    <td className="p-4 border-b border-slate-200">
                       <input
                         type="date"
                         value={newLead.meeting_date}
@@ -319,7 +319,7 @@ function Leads() {
                         className=""
                       />
                     </td>
-                    <td className="p-4 border-b border-slate-200 py-5">
+                    <td className="p-4 border-b border-slate-200">
                       <input
                         type="text"
                         value={newLead.meeting_notes}
@@ -332,7 +332,7 @@ function Leads() {
                         className=""
                       />
                     </td>
-                    <td className={`p-4 border-b border-slate-200 py-5`}>
+                    <td className={`p-4 border-b border-slate-200`}>
                       <button
                         onClick={() => {
                           handleAddLead();
@@ -349,41 +349,41 @@ function Leads() {
                 ) : (
                   <>
                     <td
-                      className={`p-4 border-b border-slate-200 py-5 ${
+                      className={`p-4 border-b border-slate-200 ${
                         lead.is_active ? "" : "line-through"
                       }`}
                     >
                       <small class="">{lead.name}</small>
                     </td>
                     <td
-                      className={`p-4 border-b border-slate-200 py-5 ${
+                      className={`p-4 border-b border-slate-200 ${
                         lead.is_active ? "" : "line-through"
                       }`}
                     >
                       <small class="">{lead.mobile}</small>
                     </td>
                     <td
-                      className={`p-4 border-b border-slate-200 py-5 ${
+                      className={`p-4 border-b border-slate-200 ${
                         lead.is_active ? "" : "line-through"
                       }`}
                     >
                       <small class="">{lead.email}</small>
                     </td>
                     <td
-                      className={`p-4 border-b border-slate-200 py-5 ${
+                      className={`p-4 border-b border-slate-200 ${
                         lead.is_active ? "" : "line-through"
                       }`}
                     >
                       <small class="">{lead.meeting_date}</small>
                     </td>
                     <td
-                      className={`p-4 border-b border-slate-200 py-5 ${
+                      className={`p-4 border-b border-slate-200 ${
                         lead.is_active ? "" : "line-through"
                       }`}
                     >
                       <small class="">{lead.meeting_notes}</small>
                     </td>
-                    <td className={`p-4 border-b border-slate-200 py-5`}>
+                    <td className={`p-4 border-b border-slate-200`}>
                       {lead.is_active ? (
                         <>
                           <button
