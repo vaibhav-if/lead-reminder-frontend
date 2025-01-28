@@ -162,7 +162,7 @@ function Leads() {
 
   return (
     <div>
-      <h2 className="text-dark-blue text-2xl mb-4">Add Leads Form</h2>
+      <h2 className="mb-4">Add Leads Form</h2>
       <div className="flex flex-col md:flex-row gap-2">
         <input
           type="text"
@@ -170,7 +170,7 @@ function Leads() {
           placeholder="Name"
           value={newLead.name}
           onChange={handleChange}
-          className="border border-gray-300 p-2 rounded"
+          className="border  p-2 rounded"
           required
         />
         <input
@@ -179,7 +179,7 @@ function Leads() {
           placeholder="Mobile"
           value={newLead.mobile}
           onChange={handleChange}
-          className="border border-gray-300 p-2 rounded"
+          className="border  p-2 rounded"
           required
         />
         <input
@@ -188,14 +188,14 @@ function Leads() {
           placeholder="Email"
           value={newLead.email}
           onChange={handleChange}
-          className="border border-gray-300 p-2 rounded"
+          className="border  p-2 rounded"
         />
         <input
           type="date"
           name="meeting_date"
           value={newLead.meeting_date}
           onChange={handleChange}
-          className="border border-gray-300 p-2 rounded"
+          className="border  p-2 rounded"
         />
         <input
           type="text"
@@ -204,13 +204,11 @@ function Leads() {
           value={newLead.meeting_notes}
           onChange={handleChange}
           maxLength={50}
-          className="border border-gray-300 p-2 rounded"
+          className="border  p-2 rounded"
         />
         <button
           onClick={handleAddLead}
-          className={`bg-cyan text-white p-2 rounded ${
-            editIndex !== null ? "bg-pink-red" : ""
-          }`}
+          className={`  p-2 rounded ${editIndex !== null ? "" : ""}`}
         >
           {editIndex !== null ? "Update Lead" : "Add Lead"}
         </button>
@@ -219,19 +217,19 @@ function Leads() {
 
       {/* Search and Filter Section */}
       <div className="mb-2 mt-20 flex justify-between items-center">
-        <h2 className="text-dark-blue text-2xl">Leads Records</h2>
+        <h2 className="">Leads Records</h2>
         <div className="flex gap-2">
           <input
             type="text"
             placeholder="Search by Name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border border-gray-300 p-2 rounded"
+            className="border  p-2 rounded"
           />
           <select
             value={filterActive}
             onChange={(e) => setFilterActive(e.target.value)}
-            className="border border-gray-300 p-2 rounded"
+            className="border  p-2 rounded"
           >
             <option value="all">All Leads</option>
             <option value="active">Active Leads</option>
@@ -240,7 +238,7 @@ function Leads() {
         </div>
       </div>
 
-      <table className="min-w-full border border-gray-300">
+      <table className="min-w-full border ">
         <thead>
           <tr>
             <th className="border px-4 py-2">Name</th>
@@ -263,7 +261,7 @@ function Leads() {
                       onChange={(e) =>
                         setNewLead({ ...newLead, name: e.target.value })
                       }
-                      className="border border-gray-300 p-1 rounded"
+                      className="border  p-1 rounded"
                     />
                   </td>
                   <td className="border px-4 py-2">
@@ -273,7 +271,7 @@ function Leads() {
                       onChange={(e) =>
                         setNewLead({ ...newLead, mobile: e.target.value })
                       }
-                      className="border border-gray-300 p-1 rounded"
+                      className="border  p-1 rounded"
                     />
                   </td>
                   <td className="border px-4 py-2">
@@ -283,7 +281,7 @@ function Leads() {
                       onChange={(e) =>
                         setNewLead({ ...newLead, email: e.target.value })
                       }
-                      className="border border-gray-300 p-1 rounded"
+                      className="border  p-1 rounded"
                     />
                   </td>
                   <td className="border px-4 py-2">
@@ -296,7 +294,7 @@ function Leads() {
                           meeting_date: e.target.value,
                         })
                       }
-                      className="border border-gray-300 p-1 rounded"
+                      className="border  p-1 rounded"
                     />
                   </td>
                   <td className="border px-4 py-2">
@@ -309,7 +307,7 @@ function Leads() {
                           meeting_notes: e.target.value,
                         })
                       }
-                      className="border border-gray-300 p-1 rounded"
+                      className="border  p-1 rounded"
                     />
                   </td>
                   <td className={`border px-4 py-2`}>
@@ -317,14 +315,11 @@ function Leads() {
                       onClick={() => {
                         handleAddLead();
                       }}
-                      className="bg-cyan text-white p-1 rounded mr-1"
+                      className="  p-1 rounded mr-1"
                     >
                       Save
                     </button>
-                    <button
-                      onClick={handleCancel}
-                      className="bg-pink-red text-white p-1 rounded"
-                    >
+                    <button onClick={handleCancel} className="  p-1 rounded">
                       Cancel
                     </button>
                   </td>
@@ -371,13 +366,13 @@ function Leads() {
                       <>
                         <button
                           onClick={() => handleEditLead(index)}
-                          className="bg-cyan text-white p=1 rounded mr=1"
+                          className="  p=1 rounded mr=1"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleDeleteLead(lead.id)}
-                          className="bg-pink-red text-white p=1 rounded"
+                          className="  p=1 rounded"
                         >
                           Deactivate
                         </button>
