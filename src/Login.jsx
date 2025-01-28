@@ -120,7 +120,7 @@ function Login() {
                   }}
                   pattern="\d{10}"
                   maxLength={10}
-                  className={`block w-full rounded-md bg-white px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300 placeholder:text-primary focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
+                  className={`block w-full rounded-md  px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300  focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
                 />
                 {!mobilePattern.test(mobile) && mobile && (
                   <p className="text-sm text-primary mt-1">
@@ -151,7 +151,7 @@ function Login() {
                     }}
                     pattern="\d{6}"
                     maxLength={6}
-                    className={`block w-full rounded-md bg-white px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300 placeholder:text-primary focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
+                    className={`block w-full rounded-md  px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300  focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
                   />
                 </div>
               </div>

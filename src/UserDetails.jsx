@@ -62,7 +62,7 @@ function UserDetails() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   maxLength={25}
-                  className={`block w-full rounded-md bg-white px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300 placeholder:text-primary focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
+                  className={`block w-full rounded-md  px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300  focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
                 />
               </div>
             </div>
@@ -79,7 +79,7 @@ function UserDetails() {
                   placeholder="Enter Your Email ID"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`block w-full rounded-md bg-white px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300 placeholder:text-primary focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
+                  className={`block w-full rounded-md  px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300  focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
                 />
               </div>
             </div>
@@ -93,10 +93,10 @@ function UserDetails() {
                   id="mobile"
                   name="mobile"
                   type="text"
-                  placeholder="Enter WhatsApp Mobile Number"
+                  placeholder="WhatsApp Mobile Number"
                   value={user.mobile}
                   readOnly
-                  className={`block w-full rounded-md bg-white px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300 placeholder:text-primary focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
+                  className={`block w-full rounded-md px-3 py-1.5 text-base  cursor-not-allowed`}
                 />
               </div>
             </div>

@@ -162,231 +162,254 @@ function Leads() {
 
   return (
     <div>
-      <h2 className="mb-4">Add Leads Form</h2>
-      <div className="flex flex-col md:flex-row gap-2">
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={newLead.name}
-          onChange={handleChange}
-          className="border  p-2 rounded"
-          required
-        />
-        <input
-          type="text"
-          name="mobile"
-          placeholder="Mobile"
-          value={newLead.mobile}
-          onChange={handleChange}
-          className="border  p-2 rounded"
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={newLead.email}
-          onChange={handleChange}
-          className="border  p-2 rounded"
-        />
-        <input
-          type="date"
-          name="meeting_date"
-          value={newLead.meeting_date}
-          onChange={handleChange}
-          className="border  p-2 rounded"
-        />
-        <input
-          type="text"
-          name="meeting_notes"
-          placeholder="Meeting Notes (max 50 characters)"
-          value={newLead.meeting_notes}
-          onChange={handleChange}
-          maxLength={50}
-          className="border  p-2 rounded"
-        />
-        <button
-          onClick={handleAddLead}
-          className={`  p-2 rounded ${editIndex !== null ? "" : ""}`}
-        >
-          {editIndex !== null ? "Update Lead" : "Add Lead"}
-        </button>
-      </div>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-
-      {/* Search and Filter Section */}
-      <div className="mb-2 mt-20 flex justify-between items-center">
-        <h2 className="">Leads Records</h2>
-        <div className="flex gap-2">
+      <div class="w-full items-center">
+        <h2 className="mb-2">Add Leads Form</h2>
+        <div className="flex flex-col md:flex-row gap-2">
           <input
             type="text"
-            placeholder="Search by Name"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="border  p-2 rounded"
+            name="name"
+            placeholder="Name"
+            value={newLead.name}
+            onChange={handleChange}
+            className="border p-2 rounded transition duration-300 ease shadow-sm focus:shadow-md focus:outline-none"
+            required
           />
-          <select
-            value={filterActive}
-            onChange={(e) => setFilterActive(e.target.value)}
-            className="border  p-2 rounded"
+          <input
+            type="text"
+            name="mobile"
+            placeholder="Mobile"
+            value={newLead.mobile}
+            onChange={handleChange}
+            className="border  p-2 rounded transition duration-300 ease shadow-sm focus:shadow-md focus:outline-none"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={newLead.email}
+            onChange={handleChange}
+            className="border  p-2 rounded transition duration-300 ease shadow-sm focus:shadow-md focus:outline-none"
+          />
+          <input
+            type="date"
+            name="meeting_date"
+            value={newLead.meeting_date}
+            onChange={handleChange}
+            className="border  p-2 rounded transition duration-300 ease shadow-sm focus:shadow-md focus:outline-none"
+          />
+          <textarea
+            type="text"
+            name="meeting_notes"
+            placeholder="Meeting Notes (max 50 characters)"
+            value={newLead.meeting_notes}
+            onChange={handleChange}
+            maxLength={50}
+            className="border  p-2 rounded transition duration-300 ease shadow-sm focus:shadow-md focus:outline-none"
+            rows={1}
+          />
+          <button
+            onClick={handleAddLead}
+            className={`  p-2 rounded ${editIndex !== null ? "" : ""}`}
           >
-            <option value="all">All Leads</option>
-            <option value="active">Active Leads</option>
-            <option value="inactive">Inactive Leads</option>
-          </select>
+            {editIndex !== null ? "Update Lead" : "Add Lead"}
+          </button>
+        </div>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+      </div>
+
+      {/* Table Section: Search and Filter Section */}
+      <div class="w-full flex justify-between items-center mb-2 mt-20">
+        <div>
+          <h2 class="">Leads Records</h2>
+        </div>
+        <div class="ml-3">
+          <div class="w-full max-w-sm min-w-[200px] relative">
+            <div class="relative flex gap-2">
+              <input
+                type="text"
+                placeholder="Search by Name"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pr-11 h-10 pl-3 py-2 bg-transparent  text-slate-700 text-sm border rounded transition duration-300 ease focus:outline-none shadow-sm focus:shadow-md"
+              />
+              <select
+                value={filterActive}
+                onChange={(e) => setFilterActive(e.target.value)}
+                className="w-full pr-11 h-10 pl-3 py-2 bg-transparent  text-slate-700 text-sm border rounded transition duration-300 ease focus:outline-none shadow-sm focus:shadow-md"
+              >
+                <option value="all">All Leads</option>
+                <option value="active">Active Leads</option>
+                <option value="inactive">Inactive Leads</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
 
-      <table className="min-w-full border ">
-        <thead>
-          <tr>
-            <th className="border px-4 py-2">Name</th>
-            <th className="border px-4 py-2">Mobile</th>
-            <th className="border px-4 py-2">Email</th>
-            <th className="border px-4 py-2">Meeting Date</th>
-            <th className="border px-4 py-2">Meeting Notes</th>
-            <th className="border px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredLeads.map((lead, index) => (
-            <tr key={lead.id}>
-              {editIndex === index ? (
-                <>
-                  <td className="border px-4 py-2">
-                    <input
-                      type="text"
-                      value={newLead.name}
-                      onChange={(e) =>
-                        setNewLead({ ...newLead, name: e.target.value })
-                      }
-                      className="border  p-1 rounded"
-                    />
-                  </td>
-                  <td className="border px-4 py-2">
-                    <input
-                      type="text"
-                      value={newLead.mobile}
-                      onChange={(e) =>
-                        setNewLead({ ...newLead, mobile: e.target.value })
-                      }
-                      className="border  p-1 rounded"
-                    />
-                  </td>
-                  <td className="border px-4 py-2">
-                    <input
-                      type="email"
-                      value={newLead.email}
-                      onChange={(e) =>
-                        setNewLead({ ...newLead, email: e.target.value })
-                      }
-                      className="border  p-1 rounded"
-                    />
-                  </td>
-                  <td className="border px-4 py-2">
-                    <input
-                      type="date"
-                      value={newLead.meeting_date}
-                      onChange={(e) =>
-                        setNewLead({
-                          ...newLead,
-                          meeting_date: e.target.value,
-                        })
-                      }
-                      className="border  p-1 rounded"
-                    />
-                  </td>
-                  <td className="border px-4 py-2">
-                    <input
-                      type="text"
-                      value={newLead.meeting_notes}
-                      onChange={(e) =>
-                        setNewLead({
-                          ...newLead,
-                          meeting_notes: e.target.value,
-                        })
-                      }
-                      className="border  p-1 rounded"
-                    />
-                  </td>
-                  <td className={`border px-4 py-2`}>
-                    <button
-                      onClick={() => {
-                        handleAddLead();
-                      }}
-                      className="  p-1 rounded mr-1"
-                    >
-                      Save
-                    </button>
-                    <button onClick={handleCancel} className="  p-1 rounded">
-                      Cancel
-                    </button>
-                  </td>
-                </>
-              ) : (
-                <>
-                  <td
-                    className={`border px-4 py-2 ${
-                      lead.is_active ? "" : "line-through"
-                    }`}
-                  >
-                    {lead.name}
-                  </td>
-                  <td
-                    className={`border px-4 py-2 ${
-                      lead.is_active ? "" : "line-through"
-                    }`}
-                  >
-                    {lead.mobile}
-                  </td>
-                  <td
-                    className={`border px-4 py-2 ${
-                      lead.is_active ? "" : "line-through"
-                    }`}
-                  >
-                    {lead.email}
-                  </td>
-                  <td
-                    className={`border px-4 py-2 ${
-                      lead.is_active ? "" : "line-through"
-                    }`}
-                  >
-                    {lead.meeting_date}
-                  </td>
-                  <td
-                    className={`border px-4 py-2 ${
-                      lead.is_active ? "" : "line-through"
-                    }`}
-                  >
-                    {lead.meeting_notes}
-                  </td>
-                  <td className={`border px-4 py-2`}>
-                    {lead.is_active ? (
-                      <>
-                        <button
-                          onClick={() => handleEditLead(index)}
-                          className="  p=1 rounded mr=1"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDeleteLead(lead.id)}
-                          className="  p=1 rounded"
-                        >
-                          Deactivate
-                        </button>
-                      </>
-                    ) : (
-                      <>Inactive</>
-                    )}
-                  </td>
-                </>
-              )}
+      <div class="relative flex flex-col w-full h-full overflow-scroll shadow-md rounded-lg bg-clip-border">
+        <table class="w-full text-left table-auto min-w-max">
+          <thead>
+            <tr>
+              <th class="p-4 border-b">
+                <p class="block leading-none">Name</p>
+              </th>
+              <th class="p-4 border-b">
+                <p class="block leading-none">Mobile</p>
+              </th>
+              <th class="p-4 border-b">
+                <p class="block leading-none">Email</p>
+              </th>
+              <th class="p-4 border-b">
+                <p class="block leading-none">Meeting Date</p>
+              </th>
+              <th class="p-4 border-b">
+                <p class="block leading-none">Meeting Notes</p>
+              </th>
+              <th class="p-4 border-b">
+                <p class="block leading-none">Actions</p>
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredLeads.map((lead, index) => (
+              <tr key={lead.id}>
+                {editIndex === index ? (
+                  <>
+                    <td className="p-4 border-b border-slate-200 py-5">
+                      <input
+                        type="text"
+                        value={newLead.name}
+                        onChange={(e) =>
+                          setNewLead({ ...newLead, name: e.target.value })
+                        }
+                        className=""
+                      />
+                    </td>
+                    <td className="p-4 border-b border-slate-200 py-5">
+                      <input
+                        type="text"
+                        value={newLead.mobile}
+                        onChange={(e) =>
+                          setNewLead({ ...newLead, mobile: e.target.value })
+                        }
+                        className=""
+                      />
+                    </td>
+                    <td className="p-4 border-b border-slate-200 py-5">
+                      <input
+                        type="email"
+                        value={newLead.email}
+                        onChange={(e) =>
+                          setNewLead({ ...newLead, email: e.target.value })
+                        }
+                        className=""
+                      />
+                    </td>
+                    <td className="p-4 border-b border-slate-200 py-5">
+                      <input
+                        type="date"
+                        value={newLead.meeting_date}
+                        onChange={(e) =>
+                          setNewLead({
+                            ...newLead,
+                            meeting_date: e.target.value,
+                          })
+                        }
+                        className=""
+                      />
+                    </td>
+                    <td className="p-4 border-b border-slate-200 py-5">
+                      <input
+                        type="text"
+                        value={newLead.meeting_notes}
+                        onChange={(e) =>
+                          setNewLead({
+                            ...newLead,
+                            meeting_notes: e.target.value,
+                          })
+                        }
+                        className=""
+                      />
+                    </td>
+                    <td className={`p-4 border-b border-slate-200 py-5`}>
+                      <button
+                        onClick={() => {
+                          handleAddLead();
+                        }}
+                        className="  p-1 rounded mr-1"
+                      >
+                        Save
+                      </button>
+                      <button onClick={handleCancel} className="  p-1 rounded">
+                        Cancel
+                      </button>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td
+                      className={`p-4 border-b border-slate-200 py-5 ${
+                        lead.is_active ? "" : "line-through"
+                      }`}
+                    >
+                      <small class="">{lead.name}</small>
+                    </td>
+                    <td
+                      className={`p-4 border-b border-slate-200 py-5 ${
+                        lead.is_active ? "" : "line-through"
+                      }`}
+                    >
+                      <small class="">{lead.mobile}</small>
+                    </td>
+                    <td
+                      className={`p-4 border-b border-slate-200 py-5 ${
+                        lead.is_active ? "" : "line-through"
+                      }`}
+                    >
+                      <small class="">{lead.email}</small>
+                    </td>
+                    <td
+                      className={`p-4 border-b border-slate-200 py-5 ${
+                        lead.is_active ? "" : "line-through"
+                      }`}
+                    >
+                      <small class="">{lead.meeting_date}</small>
+                    </td>
+                    <td
+                      className={`p-4 border-b border-slate-200 py-5 ${
+                        lead.is_active ? "" : "line-through"
+                      }`}
+                    >
+                      <small class="">{lead.meeting_notes}</small>
+                    </td>
+                    <td className={`p-4 border-b border-slate-200 py-5`}>
+                      {lead.is_active ? (
+                        <>
+                          <button
+                            onClick={() => handleEditLead(index)}
+                            className=""
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDeleteLead(lead.id)}
+                            className=""
+                          >
+                            Deactivate
+                          </button>
+                        </>
+                      ) : (
+                        <>Inactive</>
+                      )}
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

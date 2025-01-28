@@ -1,7 +1,9 @@
 function Footer() {
   return (
     <footer className="text-center p-4">
-      &copy; {new Date().getFullYear()} Lead Reminders. All rights reserved.
+      <small>
+        &copy; {new Date().getFullYear()} Lead Reminders. All rights reserved.
+      </small>
     </footer>
   );
 }
