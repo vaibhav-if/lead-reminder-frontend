@@ -2,143 +2,187 @@
 @import "tailwindcss";
 
 :root {
+  /* Color definitions */
   --text-color: #191f0a;
   --background-color: #fbfdf7;
   --primary-color: #a2c549;
   --secondary-color: #a9d0af;
   --accent-color: #87b319;
-  --secondary-color-light: #a9d0af33; /* 20% transparency */
+  --secondary-color-light: #a9d0afd9; /* 85% opacity */
   --text-color-light: #191f0a80; /* 50% transparency */
+
+  /* Font families */
+  --font-body: "Poppins", Arial, sans-serif;
+  --font-heading: "Inter", Helvetica, sans-serif;
 }
 
-.dark {
+:root.dark {
   --text-color: #eff5e0;
   --background-color: #060802;
   --primary-color: #93b63a;
   --secondary-color: #2f5635;
   --accent-color: #bae64c;
-  --secondary-color-light: #2f563533; /* 20% transparency */
-  --text-color-light: #eff5e080; /* 50% transparency */
+  --secondary-color-light: #2f5635d9;
+  --text-color-light: #eff5e080;
+  --font-body: "Poppins", Arial, sans-serif;
+  --font-heading: "Inter", Helvetica, sans-serif;
 }
 
-@theme inline {
-  --color-text: var(--text-color);
-  --color-background: var(--background-color);
-  --color-primary: var(--primary-color);
-  --color-secondary: var(--secondary-color);
-  --color-accent: var(--accent-color);
+@layer theme {
+  @theme {
+    --color-text: var(--text-color);
+    --color-background: var(--background-color);
+    --color-primary: var(--primary-color);
+    --color-secondary: var(--secondary-color);
+    --color-accent: var(--accent-color);
+    --color-secondary-light: var(--secondary-color-light);
+    --color-text-light: var(--text-color-light);
+
+    --font-family-body: var(--font-body);
+    --font-family-heading: var(--font-heading);
+  }
 }
 
-body {
-  background-color: var(--background-color);
-  color: var(--text-color);
-  font-family: "Poppins", Arial, sans-serif;
-  font-weight: 400;
-  line-height: 1.5;
-}
+@layer base {
+  html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5 {
-  font-family: "Inter", Helvetica, sans-serif;
-  font-weight: 700;
-  color: var(--primary-color);
-  line-height: 1;
-}
+  body {
+    font-family: var(--font-body);
+    color: var(--color-text);
+    background-color: var(--color-background);
+    line-height: 1.5;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 
-html {
-  font-size: 100%;
-} /* 16px */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: var(--font-family-heading);
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: 1.2;
+    margin: 1.5rem 0 1rem;
+  }
 
-h1 {
-  font-size: 2.489rem; /* 39.84px */
-}
+  h1 {
+    font-size: theme(fontSize.4xl);
+  }
+  h2 {
+    font-size: theme(fontSize.3xl);
+  }
+  h3 {
+    font-size: theme(fontSize.2xl);
+  }
+  h4 {
+    font-size: theme(fontSize.xl);
+  }
+  h5 {
+    font-size: theme(fontSize.lg);
+  }
 
-h2 {
-  font-size: 2.074rem; /* 33.12px */
-}
+  /* Links */
+  a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    transition: color 0.2s ease;
 
-h3 {
-  font-size: 1.728rem; /* 27.68px */
-}
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
 
-h4 {
-  font-size: 1.44rem; /* 23.04px */
-}
+  /* Paragraphs */
+  p {
+    margin-bottom: 1rem;
+    max-width: 65ch;
+  }
 
-h5 {
-  font-size: 1.2rem; /* 19.2px */
-}
+  /* Form elements */
+  input,
+  textarea,
+  select {
+    /* width: 100%; */
+    padding: theme(spacing.2);
+    border-radius: theme(borderRadius.lg);
+    border: 1px solid var(--color-text-light);
+    background-color: var(--color-background);
+    transition: all 0.2s ease;
 
-small {
-  font-size: 0.833rem; /* 13.28px */
-}
+    &::placeholder {
+      color: var(--color-text-light);
+    }
 
-button {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-family: "Poppins", Arial, sans-serif;
-  font-weight: 900;
-}
+    &:hover {
+      border-color: var(--color-accent);
+    }
 
-button:hover {
-  opacity: 0.9;
-}
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--color-accent);
+    }
+  }
 
-.secondary-btn {
-  background-color: var(--secondary-color);
-}
+  /* Buttons */
+  button {
+    padding: theme(spacing.3) theme(spacing.6);
+    border-radius: theme(borderRadius.lg);
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    font-family: var(--font-family-heading);
+    font-weight: 400;
+    transition: all 0.2s ease;
+    cursor: pointer;
 
-a {
-  color: var(--accent-color);
-  text-decoration: none;
-  font-family: "Poppins", Arial, sans-serif;
-}
+    &:hover {
+      background-color: var(--color-accent);
+    }
 
-a:hover {
-  text-decoration: underline;
-}
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--color-primary);
+    }
+  }
 
-input,
-textarea,
-select {
-  border: 1px solid var(--secondary-color);
-  color: var(--text-color);
-  border-radius: 8px;
-  background-color: transparent;
-}
+  button.secondary-btn {
+    background-color: var(--color-secondary);
+    color: var(--color-text);
 
-input::placeholder,
-textarea::placeholder,
-select::placeholder,
-input[type="date"]::placeholder {
-  color: var(--secondary-color);
-  opacity: 0.8;
-}
+    &:hover {
+      background-color: var(--color-secondary-light);
+    }
 
-input:focus,
-textarea:focus,
-select:focus {
-  outline: 2px solid var(--accent-color);
-  border-color: var(--accent-color);
-  box-shadow: 0 0 5px rgba(135, 179, 25, 0.5); /* Soft glow effect */
-}
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--color-secondary);
+    }
+  }
 
-input:hover,
-textarea:hover,
-select:hover {
-  border-color: var(--accent-color);
-}
+  .icon {
+    background-color: transparent !important;
+    border: 2px solid var(--color-secondary);
+    padding: theme(spacing.3);
+  }
 
-input:disabled,
-textarea:disabled,
-select:disabled {
-  background-color: var(--secondary-color-light);
-  color: var(--text-color-light);
-  cursor: not-allowed;
+  /* Lists */
+  ul,
+  ol {
+    padding-left: theme(spacing.6);
+    margin-bottom: theme(spacing.4);
+
+    li {
+      margin-bottom: theme(spacing.2);
+    }
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
 }

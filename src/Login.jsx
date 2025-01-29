@@ -186,7 +186,7 @@ function Login() {
 
           {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-          <p className="mt-5 text-center  text-accent">
+          <p className="mt-5 text-center">
             OTP will be sent on WhatsApp.
           </p>
         </div>

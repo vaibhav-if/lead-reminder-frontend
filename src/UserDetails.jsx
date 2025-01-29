@@ -62,7 +62,7 @@ function UserDetails() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   maxLength={25}
-                  className={`block w-full rounded-md  px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300  focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
+                  className={`block w-full`}
                 />
               </div>
             </div>
@@ -79,7 +79,7 @@ function UserDetails() {
                   placeholder="Enter Your Email ID"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`block w-full rounded-md  px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300  focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
+                  className={`block w-full`}
                 />
               </div>
             </div>
@@ -96,14 +96,14 @@ function UserDetails() {
                   placeholder="WhatsApp Mobile Number"
                   value={user.mobile}
                   readOnly
-                  className={`block w-full rounded-md px-3 py-1.5 text-base  cursor-not-allowed`}
+                  className={`block w-full cursor-not-allowed`}
                 />
               </div>
             </div>
 
             <div>
               <button
-                className="flex w-full justify-center rounded-md px-3 py-1.5  font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                className="w-full justify-center"
                 onClick={handleSaveDetails}
                 disabled={isSaving}
               >
@@ -113,7 +113,7 @@ function UserDetails() {
 
             <div>
               <button
-                className="secondary-btn flex w-full justify-center rounded-md px-3 py-1.5  font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                className="secondary-btn flex w-full justify-center"
                 onClick={handleLogout}
               >
                 Logout

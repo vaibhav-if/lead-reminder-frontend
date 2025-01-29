@@ -171,7 +171,7 @@ function Leads() {
             placeholder="Name"
             value={newLead.name}
             onChange={handleChange}
-            className="border p-2 rounded transition duration-300 ease shadow-sm focus:shadow-md focus:outline-none"
+            className=""
             required
           />
           <input
@@ -180,7 +180,7 @@ function Leads() {
             placeholder="Mobile"
             value={newLead.mobile}
             onChange={handleChange}
-            className="border  p-2 rounded transition duration-300 ease shadow-sm focus:shadow-md focus:outline-none"
+            className=""
             required
           />
           <input
@@ -189,14 +189,14 @@ function Leads() {
             placeholder="Email"
             value={newLead.email}
             onChange={handleChange}
-            className="border  p-2 rounded transition duration-300 ease shadow-sm focus:shadow-md focus:outline-none"
+            className=""
           />
           <input
             type="date"
             name="meeting_date"
             value={newLead.meeting_date}
             onChange={handleChange}
-            className="border  p-2 rounded transition duration-300 ease shadow-sm focus:shadow-md focus:outline-none"
+            className=""
           />
           <textarea
             type="text"
@@ -205,13 +205,10 @@ function Leads() {
             value={newLead.meeting_notes}
             onChange={handleChange}
             maxLength={50}
-            className="border  p-2 rounded transition duration-300 ease shadow-sm focus:shadow-md focus:outline-none"
+            className=""
             rows={1}
           />
-          <button
-            onClick={handleAddLead}
-            className={`  p-2 rounded ${editIndex !== null ? "" : ""}`}
-          >
+          <button onClick={handleAddLead} className="">
             {editIndex !== null ? "Update Lead" : "Add Lead"}
           </button>
         </div>
@@ -231,12 +228,12 @@ function Leads() {
                 placeholder="Search by Name"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pr-11 h-10 pl-3 py-2 bg-transparent  text-slate-700 text-sm border rounded transition duration-300 ease focus:outline-none shadow-sm focus:shadow-md"
+                className=""
               />
               <select
                 value={filterActive}
                 onChange={(e) => setFilterActive(e.target.value)}
-                className="w-full pr-11 h-10 pl-3 py-2 bg-transparent  text-slate-700 text-sm border rounded transition duration-300 ease focus:outline-none shadow-sm focus:shadow-md"
+                className=""
               >
                 <option value="all">All Leads</option>
                 <option value="active">Active Leads</option>
@@ -248,7 +245,7 @@ function Leads() {
       </div>
 
       <div class="relative flex flex-col w-full h-full overflow-scroll shadow-md rounded-lg bg-clip-border">
-        <table class="w-full text-left table-auto min-w-max">
+        <table class="w-full text-left table-auto min-w-max table-fixed">
           <thead>
             <tr>
               <th class="p-4 border-b">
@@ -337,11 +334,11 @@ function Leads() {
                         onClick={() => {
                           handleAddLead();
                         }}
-                        className="  p-1 rounded mr-1"
+                        className=""
                       >
                         Save
                       </button>
-                      <button onClick={handleCancel} className="  p-1 rounded">
+                      <button onClick={handleCancel} className="">
                         Cancel
                       </button>
                     </td>
@@ -353,35 +350,35 @@ function Leads() {
                         lead.is_active ? "" : "line-through"
                       }`}
                     >
-                      <small class="">{lead.name}</small>
+                      <p class="">{lead.name}</p>
                     </td>
                     <td
                       className={`p-4 border-b border-slate-200 ${
                         lead.is_active ? "" : "line-through"
                       }`}
                     >
-                      <small class="">{lead.mobile}</small>
+                      <p class="">{lead.mobile}</p>
                     </td>
                     <td
                       className={`p-4 border-b border-slate-200 ${
                         lead.is_active ? "" : "line-through"
                       }`}
                     >
-                      <small class="">{lead.email}</small>
+                      <p class="">{lead.email}</p>
                     </td>
                     <td
                       className={`p-4 border-b border-slate-200 ${
                         lead.is_active ? "" : "line-through"
                       }`}
                     >
-                      <small class="">{lead.meeting_date}</small>
+                      <p class="">{lead.meeting_date}</p>
                     </td>
                     <td
                       className={`p-4 border-b border-slate-200 ${
                         lead.is_active ? "" : "line-through"
                       }`}
                     >
-                      <small class="">{lead.meeting_notes}</small>
+                      <p class="">{lead.meeting_notes}</p>
                     </td>
                     <td className={`p-4 border-b border-slate-200`}>
                       {lead.is_active ? (
@@ -394,7 +391,7 @@ function Leads() {
                           </button>
                           <button
                             onClick={() => handleDeleteLead(lead.id)}
-                            className=""
+                            className="secondary-btn"
                           >
                             Deactivate
                           </button>
