@@ -1,92 +1,224 @@
+@import url("https://fonts.googleapis.com/css?family=Inter:700|Poppins:400");
 @import "tailwindcss";
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* Color definitions */
+  --text-color: #191f0a;
+  --background-color: #fbfdf7;
+  --primary-color: #a2c549;
+  --secondary-color: #a9d0af;
+  --accent-color: #87b319;
+  --secondary-color-light: #a9d0afd9; /* 85% opacity */
+  --text-color-light: #191f0a80; /* 50% transparency */
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Font families */
+  --font-body: "Poppins", Arial, sans-serif;
+  --font-heading: "Inter", Helvetica, sans-serif;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --spacing: 0.25rem;
+
+  --font-scale: 1.2;
+  --p: 1rem;
+
+  --h5: calc(var(--p) * var(--font-scale));
+  --h4: calc(var(--h5) * var(--font-scale));
+  --h3: calc(var(--h4) * var(--font-scale));
+  --h2: calc(var(--h3) * var(--font-scale));
+  --h1: calc(var(--h2) * var(--font-scale));
+  --small: calc(var(--p) / var(--font-scale));
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-/* h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-} */
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background-color: #007f96;
-  color: white;
-  padding: 8px;
-  z-index: 1000;
-}
-
-.skip-link:focus {
-  top: 10px;
-}
-
-.input-error {
-  border: 1px solid red;
-}
-
-.error-message {
-  color: red;
-}
-
-@media (prefers-color-scheme: light) {
+@media (max-width: 600px) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    --p: 0.8rem;
+    --font-scale: 1.125;
+    --spacing: 0.2rem;
   }
-  a:hover {
-    color: #747bff;
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  :root {
+    --p: 0.9rem;
   }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --p: 1.2rem;
+  }
+}
+
+:root.dark {
+  --text-color: #eff5e0;
+  --background-color: #060802;
+  --primary-color: #93b63a;
+  --secondary-color: #2f5635;
+  --accent-color: #bae64c;
+  --secondary-color-light: #2f5635d9;
+  --text-color-light: #eff5e080;
+}
+
+@theme {
+  --color-text: var(--text-color);
+  --color-background: var(--background-color);
+  --color-primary: var(--primary-color);
+  --color-secondary: var(--secondary-color);
+  --color-accent: var(--accent-color);
+  --color-secondary-light: var(--secondary-color-light);
+  --color-text-light: var(--text-color-light);
+
+  --font-family-body: var(--font-body);
+  --font-family-heading: var(--font-heading);
+
+  --spacing: var(--spacing);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-size: var(--p);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: var(--p);
+    color: var(--color-text);
+    background-color: var(--color-background);
+    line-height: 1.5;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: var(--font-family-heading);
+    font-weight: 700;
+    color: var(--color-primary);
+    line-height: 1.2;
+    margin: 1.5rem 0 1rem;
+  }
+
+  h1 {
+    font-size: var(--h1);
+  }
+  h2 {
+    font-size: var(--h2);
+  }
+  h3 {
+    font-size: var(--h3);
+  }
+  h4 {
+    font-size: var(--h4);
+  }
+  h5 {
+    font-size: var(--h5);
+  }
+  p {
+    font-size: var(--p);
+  }
+  small {
+    font-size: var(--small);
+  }
+
+  /* Links */
+  a {
+    color: var(--color-accent);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--color-primary);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  /* Paragraphs */
+  p {
+    margin-bottom: 1rem;
+    max-width: 65ch;
+  }
+
+  /* Form elements */
+  input,
+  textarea,
+  select {
+    /* width: 100%; */
+    padding: calc(var(--spacing) * 2);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-text-light);
+    background-color: var(--color-background);
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      color: var(--color-text-light);
+    }
+
+    &:hover {
+      border-color: var(--color-accent);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--color-accent);
+    }
+  }
+
+  /* Buttons */
   button {
-    background-color: #f9f9f9;
+    padding: calc(var(--spacing) * 3);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-primary);
+    outline: 2px solid var(--color-primary);
+    color: var(--color-text);
+    font-family: var(--font-family-heading);
+    font-weight: 400;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-background);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--color-primary);
+    }
+  }
+
+  button.secondary-btn {
+    background-color: var(--color-secondary);
+    color: var(--color-text);
+    outline: 2px solid var(--color-secondary);
+
+    &:hover {
+      background-color: var(--color-background);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--color-secondary);
+    }
+  }
+
+  /* Lists */
+  ul,
+  ol {
+    padding-left: calc(var(--spacing) * 2);
+    margin-bottom: calc(var(--spacing) * 2);
+
+    li {
+      margin-bottom: calc(var(--spacing) * 2);
+    }
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
   }
 }

@@ -92,46 +92,106 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <input
-        type="text"
-        placeholder="Enter Mobile Number"
-        value={mobile}
-        onChange={(e) => {
-          setMobile(e.target.value);
-          setErrorMessage("");
-        }}
-        className={`input ${
-          !mobilePattern.test(mobile) && mobile ? "input-error" : ""
-        }`}
-      />
-      {isOtpSent && (
-        <>
-          <input
-            type="text"
-            placeholder="Enter OTP"
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-          />
-        </>
-      )}
-      <ReCAPTCHA
-        ref={recaptchaRef}
-        sitekey={process.env.REACT_APP_SITE_KEY}
-        onChange={handleCaptchaChange}
-      />
-      <button onClick={handleLogin} disabled={isSendingOtp || isVerifyingOtp}>
-        {isOtpSent
-          ? isVerifyingOtp
-            ? "Verifying..."
-            : "Verify OTP & Login"
-          : isSendingOtp
-          ? "Sending..."
-          : "Send OTP"}
-      </button>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-    </div>
+    <>
+      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <h2 className="mt-10 text-center">Sign in or Create an Account</h2>
+        </div>
+
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <div className="space-y-6">
+            <div>
+              <label htmlFor="mobile" className="block  font-medium ">
+                Mobile Number
+              </label>
+              <div className="mt-2">
+                <input
+                  id="mobile"
+                  name="mobile"
+                  type="text"
+                  placeholder="Enter WhatsApp Mobile Number"
+                  value={mobile}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, "");
+                    if (value.length <= 10) {
+                      setMobile(value);
+                      setErrorMessage("");
+                    }
+                  }}
+                  pattern="\d{10}"
+                  maxLength={10}
+                  className={`block w-full rounded-md  px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300  focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
+                />
+                {!mobilePattern.test(mobile) && mobile && (
+                  <p className="text-sm text-primary mt-1">
+                    Please enter a valid 10-digit mobile number.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {isOtpSent && (
+              <div>
+                <label htmlFor="otp" className="block  font-medium ">
+                  Enter OTP
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="otp"
+                    name="otp"
+                    type="text"
+                    placeholder="Enter Verification Code"
+                    value={otp}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, "");
+                      if (value.length <= 6) {
+                        setOtp(e.target.value);
+                        setErrorMessage("");
+                      }
+                    }}
+                    pattern="\d{6}"
+                    maxLength={6}
+                    className={`block w-full rounded-md  px-3 py-1.5 text-base  outline-1 -outline-offset-1 outline-gray-300  focus:outline-2 focus:-outline-offset-2 focus:outline-accent sm:`}
+                  />
+                </div>
+              </div>
+            )}
+
+            <div>
+              <div className="flex items-center justify-center">
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={process.env.REACT_APP_SITE_KEY}
+                  onChange={handleCaptchaChange}
+                />
+              </div>
+            </div>
+
+            <div>
+              <button
+                className="flex w-full justify-center rounded-md px-3 py-1.5  font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                onClick={handleLogin}
+                disabled={isSendingOtp || isVerifyingOtp}
+              >
+                {isOtpSent
+                  ? isVerifyingOtp
+                    ? "Verifying..."
+                    : "Verify OTP & Login"
+                  : isSendingOtp
+                  ? "Sending..."
+                  : "Send OTP"}
+              </button>
+            </div>
+          </div>
+
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+          <p className="mt-5 text-center">
+            OTP will be sent on WhatsApp.
+          </p>
+        </div>
+      </div>
+    </>
   );
 }
 

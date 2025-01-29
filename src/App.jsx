@@ -18,7 +18,7 @@ function App() {
   return (
     <UserProvider>
       <Router>
-        <div className="min-h-screen bg-light-gray flex flex-col">
+        <div className="min-h-screen flex flex-col">
           <a href="#main-content" className="skip-link">
             Skip to main content
           </a>
