@@ -18,7 +18,7 @@ function Leads() {
     userId: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
-  const [editIndex, setEditIndex] = useState(null);
+  const [editId, setEditId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterActive, setFilterActive] = useState("active");
 
@@ -83,11 +83,11 @@ function Leads() {
       return;
     }
 
-    if (editIndex !== null) {
-      await updateLead(leads[editIndex].id, newLead, userId);
-      setEditIndex(null);
+    if (editId !== null) {
+      await updateLead(editId, newLead, userId);
+      setEditId(null);
     } else {
-      // Add new lead if editIndex is null
+      // Add new lead if editId is null
       await createLead(newLead, userId);
     }
     resetNewLead();
@@ -116,14 +116,14 @@ function Leads() {
     }
   };
 
-  const handleEditLead = (index) => {
-    setNewLead(leads[index]);
-    setEditIndex(index);
+  const handleEditLead = (leadId) => {
+    setNewLead(leads.find((lead) => lead.id === leadId));
+    setEditId(leadId);
   };
 
   const handleCancel = () => {
     resetNewLead();
-    setEditIndex(null);
+    setEditId(null);
   };
 
   const resetNewLead = () => {
@@ -209,7 +209,7 @@ function Leads() {
             rows={1}
           />
           <button onClick={handleAddLead} className="">
-            {editIndex !== null ? "Update Lead" : "Add Lead"}
+            {editId !== null ? "Update Lead" : "Add Lead"}
           </button>
         </div>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
@@ -245,7 +245,7 @@ function Leads() {
       </div>
 
       <div className="relative flex flex-col w-full h-full overflow-scroll shadow-md rounded-lg bg-clip-border">
-        <table className="w-full text-left table-auto min-w-max table-fixed">
+        <table className="w-full text-left min-w-max table-fixed">
           <thead>
             <tr>
               <th className="w-1/6 p-4 border-b">
@@ -271,7 +271,7 @@ function Leads() {
           <tbody>
             {filteredLeads.map((lead, index) => (
               <tr key={lead.id}>
-                {editIndex === index ? (
+                {editId === lead.id ? (
                   <>
                     <td className="p-4 border-b border-slate-200">
                       <input
@@ -280,7 +280,7 @@ function Leads() {
                         onChange={(e) =>
                           setNewLead({ ...newLead, name: e.target.value })
                         }
-                        className=""
+                        className="w-full"
                       />
                     </td>
                     <td className="p-4 border-b border-slate-200">
@@ -290,7 +290,7 @@ function Leads() {
                         onChange={(e) =>
                           setNewLead({ ...newLead, mobile: e.target.value })
                         }
-                        className=""
+                        className="w-full"
                       />
                     </td>
                     <td className="p-4 border-b border-slate-200">
@@ -300,7 +300,7 @@ function Leads() {
                         onChange={(e) =>
                           setNewLead({ ...newLead, email: e.target.value })
                         }
-                        className=""
+                        className="w-full"
                       />
                     </td>
                     <td className="p-4 border-b border-slate-200">
@@ -313,7 +313,7 @@ function Leads() {
                             meeting_date: e.target.value,
                           })
                         }
-                        className=""
+                        className="w-full"
                       />
                     </td>
                     <td className="p-4 border-b border-slate-200">
@@ -326,7 +326,7 @@ function Leads() {
                             meeting_notes: e.target.value,
                           })
                         }
-                        className=""
+                        className="w-full"
                       />
                     </td>
                     <td className={`p-4 border-b border-slate-200 text-center`}>
@@ -334,12 +334,49 @@ function Leads() {
                         onClick={() => {
                           handleAddLead();
                         }}
-                        className=""
+                        className="relative group mr-2"
                       >
-                        Save
+                        <svg
+                          title="Save"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="size-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m9 13.5 3 3m0 0 3-3m-3 3v-6m1.06-4.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
+                          />
+                        </svg>
+                        <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 w-max px-2 py-1 text-sm text-white bg-gray-700 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          Save
+                        </div>
                       </button>
-                      <button onClick={handleCancel} className="">
-                        Cancel
+                      <button
+                        onClick={handleCancel}
+                        className="secondary-btn relative group"
+                      >
+                        <svg
+                          title="Cancel"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="size-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18 18 6M6 6l12 12"
+                          />
+                        </svg>
+                        <div className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 w-max px-2 py-1 text-sm text-white bg-gray-700 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          Cancel
+                        </div>
                       </button>
                     </td>
                   </>
@@ -388,10 +425,11 @@ function Leads() {
                       {lead.is_active ? (
                         <>
                           <button
-                            onClick={() => handleEditLead(index)}
-                            className="relative group"
+                            onClick={() => handleEditLead(lead.id)}
+                            className="relative group mr-2"
                           >
                             <svg
+                              title="Edit Lead"
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
                               viewBox="0 0 24 24"
@@ -414,6 +452,7 @@ function Leads() {
                             className="secondary-btn relative group"
                           >
                             <svg
+                              title="Deactivate"
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
                               viewBox="0 0 24 24"
