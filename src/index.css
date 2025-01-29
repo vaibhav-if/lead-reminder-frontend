@@ -14,6 +14,38 @@
   /* Font families */
   --font-body: "Poppins", Arial, sans-serif;
   --font-heading: "Inter", Helvetica, sans-serif;
+
+  --spacing: 0.25rem;
+
+  --font-scale: 1.2;
+  --p: 1rem;
+
+  --h5: calc(var(--p) * var(--font-scale));
+  --h4: calc(var(--h5) * var(--font-scale));
+  --h3: calc(var(--h4) * var(--font-scale));
+  --h2: calc(var(--h3) * var(--font-scale));
+  --h1: calc(var(--h2) * var(--font-scale));
+  --small: calc(var(--p) / var(--font-scale));
+}
+
+@media (max-width: 600px) {
+  :root {
+    --p: 0.8rem;
+    --font-scale: 1.125;
+    --spacing: 0.2rem;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  :root {
+    --p: 0.9rem;
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --p: 1.2rem;
+  }
 }
 
 :root.dark {
@@ -24,32 +56,33 @@
   --accent-color: #bae64c;
   --secondary-color-light: #2f5635d9;
   --text-color-light: #eff5e080;
-  --font-body: "Poppins", Arial, sans-serif;
-  --font-heading: "Inter", Helvetica, sans-serif;
 }
 
-@layer theme {
-  @theme {
-    --color-text: var(--text-color);
-    --color-background: var(--background-color);
-    --color-primary: var(--primary-color);
-    --color-secondary: var(--secondary-color);
-    --color-accent: var(--accent-color);
-    --color-secondary-light: var(--secondary-color-light);
-    --color-text-light: var(--text-color-light);
+@theme {
+  --color-text: var(--text-color);
+  --color-background: var(--background-color);
+  --color-primary: var(--primary-color);
+  --color-secondary: var(--secondary-color);
+  --color-accent: var(--accent-color);
+  --color-secondary-light: var(--secondary-color-light);
+  --color-text-light: var(--text-color-light);
 
-    --font-family-body: var(--font-body);
-    --font-family-heading: var(--font-heading);
-  }
+  --font-family-body: var(--font-body);
+  --font-family-heading: var(--font-heading);
+
+  --spacing: var(--spacing);
 }
 
 @layer base {
   html {
+    scroll-behavior: smooth;
+    font-size: var(--p);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   body {
     font-family: var(--font-body);
+    font-size: var(--p);
     color: var(--color-text);
     background-color: var(--color-background);
     line-height: 1.5;
@@ -69,29 +102,36 @@
   }
 
   h1 {
-    font-size: theme(fontSize.4xl);
+    font-size: var(--h1);
   }
   h2 {
-    font-size: theme(fontSize.3xl);
+    font-size: var(--h2);
   }
   h3 {
-    font-size: theme(fontSize.2xl);
+    font-size: var(--h3);
   }
   h4 {
-    font-size: theme(fontSize.xl);
+    font-size: var(--h4);
   }
   h5 {
-    font-size: theme(fontSize.lg);
+    font-size: var(--h5);
+  }
+  p {
+    font-size: var(--p);
+  }
+  small {
+    font-size: var(--small);
   }
 
   /* Links */
   a {
     color: var(--color-accent);
-    text-decoration: underline;
     transition: color 0.2s ease;
 
     &:hover {
       color: var(--color-primary);
+      text-decoration: underline;
+      cursor: pointer;
     }
   }
 
@@ -106,8 +146,8 @@
   textarea,
   select {
     /* width: 100%; */
-    padding: theme(spacing.2);
-    border-radius: theme(borderRadius.lg);
+    padding: calc(var(--spacing) * 2);
+    border-radius: var(--radius-lg);
     border: 1px solid var(--color-text-light);
     background-color: var(--color-background);
     transition: all 0.2s ease;
@@ -128,9 +168,10 @@
 
   /* Buttons */
   button {
-    padding: theme(spacing.3) theme(spacing.6);
-    border-radius: theme(borderRadius.lg);
+    padding: calc(var(--spacing) * 3);
+    border-radius: var(--radius-lg);
     background-color: var(--color-primary);
+    outline: 2px solid var(--color-primary);
     color: var(--color-text);
     font-family: var(--font-family-heading);
     font-weight: 400;
@@ -138,7 +179,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: var(--color-accent);
+      background-color: var(--color-background);
     }
 
     &:focus {
@@ -150,9 +191,10 @@
   button.secondary-btn {
     background-color: var(--color-secondary);
     color: var(--color-text);
+    outline: 2px solid var(--color-secondary);
 
     &:hover {
-      background-color: var(--color-secondary-light);
+      background-color: var(--color-background);
     }
 
     &:focus {
@@ -161,20 +203,14 @@
     }
   }
 
-  .icon {
-    background-color: transparent !important;
-    border: 2px solid var(--color-secondary);
-    padding: theme(spacing.3);
-  }
-
   /* Lists */
   ul,
   ol {
-    padding-left: theme(spacing.6);
-    margin-bottom: theme(spacing.4);
+    padding-left: calc(var(--spacing) * 2);
+    margin-bottom: calc(var(--spacing) * 2);
 
     li {
-      margin-bottom: theme(spacing.2);
+      margin-bottom: calc(var(--spacing) * 2);
     }
   }
 
