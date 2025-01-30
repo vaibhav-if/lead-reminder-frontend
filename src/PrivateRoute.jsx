@@ -4,7 +4,6 @@ import { useUser } from "./UserContext";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const { user, loading } = useUser();
-  console.log(loading);
   if (loading) {
     return <div>Loading...</div>;
   }

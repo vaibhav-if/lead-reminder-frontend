@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import Cookies from "js-cookie";
 import axios from "axios";
 
 const SERVER_PORT = process.env.SERVER_PORT;
@@ -8,44 +7,39 @@ const SERVER_URL = `http://localhost:${SERVER_PORT}`;
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({
-    id: null,
-    name: "",
-    mobile: "",
-    email: "",
-    referral: "",
-  });
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = Cookies.get("user");
-    console.log("inside use effect " + storedUser);
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      console.log("inside use effect " + storedUser);
-    }
-    setLoading(false);
+    fetchUser();
   }, []);
 
-  const fetchUser = async (mobile) => {
+  const fetchUser = async () => {
     try {
       console.log("inside fetchUser");
-      const response = await axios.get(`${SERVER_URL}/users?mobile=${mobile}`);
+      const response = await axios.get(`${SERVER_URL}/auth/check`);
       setUser(response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching user:", error);
       return null;
+    } finally {
+      setLoading(false);
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    Cookies.remove("user");
+  const logout = async () => {
+    try {
+      await axios.get(`${SERVER_URL}/logout`);
+      setUser(null);
+    } catch (error) {
+      console.error("Error logging out:", error);
+      return null;
+    }
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, loading, fetchUser, logout }}>
+    <UserContext.Provider value={{ user, setUser, loading, logout }}>
       {children}
     </UserContext.Provider>
   );

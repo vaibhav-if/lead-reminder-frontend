@@ -1,15 +1,16 @@
 import React, { useState, useRef } from "react";
 import { useUser } from "./UserContext";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 const SERVER_PORT = process.env.SERVER_PORT;
 const SERVER_URL = `http://localhost:${SERVER_PORT}`;
 
 function Login() {
-  const { user, fetchUser } = useUser();
+  const { setUser } = useUser();
   const [mobile, setMobile] = useState("");
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -43,25 +44,21 @@ function Login() {
           setErrorMessage("Please enter the verification code.");
           return;
         }
-        await axios.post(`${SERVER_URL}/verify-otp`, {
+        const response = await axios.post(`${SERVER_URL}/login`, {
           mobile,
           otp,
         });
-        const fetchedUser = await fetchUser(mobile);
-        if (fetchedUser) {
-          Cookies.set("user", JSON.stringify({ ...fetchedUser }), {
-            expires: 7,
-          });
+        console.log(response);
+        if (response.data) {
+          setUser(response.data);
           navigate("/");
         } else {
           setErrorMessage("Something went wrong. Please register again.");
           navigate("/login");
         }
       } catch (error) {
-        console.error("Error verifying OTP:", error);
-        setErrorMessage(
-          "An error occurred while verifying OTP. Please enter correct OTP."
-        );
+        console.error("Error verifying OTP: ", error);
+        setErrorMessage("An error occurred while verifying OTP.");
       } finally {
         recaptchaRef.current.reset();
         setIsVerifyingOtp(false);
@@ -187,7 +184,9 @@ function Login() {
           {errorMessage && <p className="error-message">{errorMessage}</p>}
 
           <p className="mt-5 text-center">
-            OTP will be sent on WhatsApp.
+            {isOtpSent
+              ? "OTP has been sent on Whatsapp"
+              : "OTP will be sent on WhatsApp."}
           </p>
         </div>
       </div>

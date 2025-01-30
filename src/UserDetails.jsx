@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useUser } from "./UserContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 const SERVER_PORT = process.env.SERVER_PORT;
 const SERVER_URL = `http://localhost:${SERVER_PORT}`;
@@ -24,9 +23,6 @@ function UserDetails() {
         updatedUser
       );
       setUser(response.data);
-      // TODO Change cookies logic to send tokens
-      Cookies.set("user", JSON.stringify(response.data), { expires: 7 });
-      alert("Details saved!");
       navigate("/");
     } catch (error) {
       console.error("Error saving user details:", error);
