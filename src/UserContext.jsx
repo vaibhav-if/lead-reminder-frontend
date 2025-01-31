@@ -17,7 +17,7 @@ export const UserProvider = ({ children }) => {
   const fetchUser = async () => {
     try {
       console.log("inside fetchUser");
-      const response = await axios.get(`${SERVER_URL}/auth/check`);
+      const response = await axios.get(`${SERVER_URL}/users/auth/check`);
       setUser(response.data);
       return response.data;
     } catch (error) {
@@ -30,7 +30,7 @@ export const UserProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.get(`${SERVER_URL}/logout`);
+      await axios.get(`${SERVER_URL}/users/logout`);
       setUser(null);
     } catch (error) {
       console.error("Error logging out:", error);

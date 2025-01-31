@@ -44,7 +44,7 @@ function Login() {
           setErrorMessage("Please enter the verification code.");
           return;
         }
-        const response = await axios.post(`${SERVER_URL}/login`, {
+        const response = await axios.post(`${SERVER_URL}/users/login`, {
           mobile,
           otp,
         });
@@ -67,7 +67,7 @@ function Login() {
       setIsSendingOtp(true);
       try {
         const recaptchaToken = await recaptchaRef.current.getValue();
-        await axios.post(`${SERVER_URL}/send-otp`, {
+        await axios.post(`${SERVER_URL}/users/send-otp`, {
           mobile,
           recaptchaToken,
         });

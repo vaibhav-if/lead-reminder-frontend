@@ -23,9 +23,11 @@ function Navbar() {
   return (
     <nav className="p-4 pt-0">
       <div className="flex justify-between items-center">
-        <a href="/">
-          <h1 className="no-underline">Lead Reminders</h1>
-        </a>
+        <h1 className="">
+          <a href="/" className="no-underline">
+            Lead Reminders
+          </a>
+        </h1>
         <div className="space-x-4">
           <button
             className="secondary-btn relative group"
@@ -66,11 +68,8 @@ function Navbar() {
               Dark/Light Mode
             </div>
           </button>
-          <a href="/about" className="">
-            About
-          </a>
-          <a href="/pricing" className="">
-            Pricing
+          <a href="/" className="">
+            Home
           </a>
           <a href="/user-details" className="">
             User

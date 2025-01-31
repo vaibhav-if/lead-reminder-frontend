@@ -133,6 +133,14 @@
       text-decoration: underline;
       cursor: pointer;
     }
+
+    &:focus-visible {
+      color: var(--color-primary);
+      text-decoration: underline;
+      cursor: pointer;
+      outline: 4px solid var(--color-accent);
+      box-shadow: 0 0 0 2px var(--color-secondary);
+    }
   }
 
   /* Paragraphs */
@@ -164,6 +172,11 @@
       outline: none;
       box-shadow: 0 0 0 2px var(--color-accent);
     }
+
+    &:focus-visible {
+      outline: 4px solid var(--color-accent);
+      box-shadow: 0 0 0 2px var(--color-secondary);
+    }
   }
 
   /* Buttons */
@@ -186,6 +199,11 @@
       outline: none;
       box-shadow: 0 0 0 2px var(--color-primary);
     }
+
+    &:focus-visible {
+      outline: 4px solid var(--color-accent);
+      box-shadow: 0 0 0 2px var(--color-secondary);
+    }
   }
 
   button.secondary-btn {
@@ -199,6 +217,11 @@
 
     &:focus {
       outline: none;
+      box-shadow: 0 0 0 2px var(--color-secondary);
+    }
+
+    &:focus-visible {
+      outline: 4px solid var(--color-accent);
       box-shadow: 0 0 0 2px var(--color-secondary);
     }
   }

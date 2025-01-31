@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
-import { UserProvider, useUser } from "./UserContext";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { UserProvider } from "./UserContext";
 import Login from "./Login";
 import UserDetails from "./UserDetails";
 import Leads from "./Leads";
