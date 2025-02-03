@@ -16,12 +16,11 @@ export const UserProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      console.log("inside fetchUser");
       const response = await axios.get(`${SERVER_URL}/users/auth/check`);
       setUser(response.data);
       return response.data;
     } catch (error) {
-      console.error("Error fetching user:", error);
+      console.error("Error fetching user:");
       return null;
     } finally {
       setLoading(false);
@@ -33,7 +32,7 @@ export const UserProvider = ({ children }) => {
       await axios.get(`${SERVER_URL}/users/logout`);
       setUser(null);
     } catch (error) {
-      console.error("Error logging out:", error);
+      console.error("Error logging out:");
       return null;
     }
   };

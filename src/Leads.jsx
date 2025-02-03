@@ -32,7 +32,6 @@ function Leads() {
   const fetchLeads = async () => {
     try {
       const userId = user?.id;
-      console.log(user);
       if (!userId) {
         console.error("User ID is not available.");
         return;
@@ -40,7 +39,7 @@ function Leads() {
       const response = await axios.get(`${SERVER_URL}/users/${userId}/leads`);
       setLeads(response.data);
     } catch (error) {
-      console.error("Error fetching leads:", error);
+      console.error("Error fetching leads");
     }
   };
 
@@ -57,12 +56,12 @@ function Leads() {
       return;
     }
 
-    if (!mobile) {
-      setErrorMessage("Mobile number is mandatory.");
-      return;
-    }
+    // if (!mobile) {
+    //   setErrorMessage("Mobile number is mandatory.");
+    //   return;
+    // }
 
-    if (!mobilePattern.test(mobile)) {
+    if (mobile && !mobilePattern.test(mobile)) {
       setErrorMessage("Please enter a valid Indian mobile number.");
       return;
     }
@@ -104,7 +103,7 @@ function Leads() {
       setErrorMessage(
         "Error adding lead, please make sure to enter unique phone numbers"
       );
-      console.error("Error adding lead:", error);
+      console.error("Error adding lead:");
     }
   };
 
@@ -121,7 +120,7 @@ function Leads() {
       setErrorMessage(
         "Error updating lead, please make sure to enter unique phone numbers"
       );
-      console.error("Error updating lead:", error);
+      console.error("Error updating lead:");
     }
   };
 
@@ -155,7 +154,7 @@ function Leads() {
         prevLeads.map((lead) => (lead.id === id ? response.data : lead))
       );
     } catch (error) {
-      console.error("Error deleting lead:", error);
+      console.error("Error deleting lead:");
     }
   };
 

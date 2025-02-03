@@ -6,16 +6,21 @@ import axios from "axios";
 const SERVER_PORT = process.env.SERVER_PORT;
 const SERVER_URL = `http://localhost:${SERVER_PORT}`;
 
+// Regex pattern for validating Indian mobile numbers (Refactor to common file)
+const mobilePattern = /^[6-9]\d{9}$/;
+
 function UserDetails() {
   const { user, setUser, logout } = useUser();
   const [name, setName] = useState(user.name || "");
-  const [email, setEmail] = useState(user.email || "");
+  const [email] = useState(user.email || "");
+  const [mobile] = useState(user.mobile || "");
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeactivating, setIsDeactivating] = useState(false);
   const navigate = useNavigate();
 
   const handleSaveDetails = async () => {
     setIsSaving(true);
-    const updatedUser = { ...user, name, email };
+    const updatedUser = { ...user, name, mobile };
 
     try {
       const response = await axios.put(
@@ -25,7 +30,7 @@ function UserDetails() {
       setUser(response.data);
       navigate("/");
     } catch (error) {
-      console.error("Error saving user details:", error);
+      console.error("Error saving user details:");
     } finally {
       setIsSaving(false);
     }
@@ -34,6 +39,25 @@ function UserDetails() {
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+
+  const handleDeactivate = async () => {
+    const confirmDeactivate = window.confirm(
+      "This action is irreversible. You will not be able to login to your account again. Do you really want to deactivate?"
+    );
+    if (confirmDeactivate) {
+      setIsDeactivating(true);
+      try {
+        await axios.patch(`${SERVER_URL}/users/${user?.id}/deactivate`);
+        console.log("deactivated");
+        logout();
+        navigate("/login");
+      } catch (error) {
+        console.error("Error deactivating user details:");
+      } finally {
+        setIsDeactivating(false);
+      }
+    }
   };
 
   return (
@@ -74,8 +98,9 @@ function UserDetails() {
                   type="email"
                   placeholder="Enter Your Email ID"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className={`block w-full`}
+                  // onChange={(e) => setEmail(e.target.value)}
+                  className={`block w-full cursor-not-allowed`}
+                  readOnly
                 />
               </div>
             </div>
@@ -90,10 +115,16 @@ function UserDetails() {
                   name="mobile"
                   type="text"
                   placeholder="WhatsApp Mobile Number"
-                  value={user.mobile}
-                  readOnly
+                  value={mobile}
                   className={`block w-full cursor-not-allowed`}
+                  readOnly
+                  maxLength={10}
                 />
+                {!mobilePattern.test(mobile) && mobile && (
+                  <p className="text-sm text-primary mt-1">
+                    Please enter a valid 10-digit mobile number.
+                  </p>
+                )}
               </div>
             </div>
 
@@ -113,6 +144,28 @@ function UserDetails() {
                 onClick={handleLogout}
               >
                 Logout
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={handleDeactivate}
+                className="flex items-center w-full text-white bg-red-500 hover:bg-red-700 justify-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+                  />
+                </svg>
+                &nbsp; {isDeactivating ? "Deactivating..." : "Deactivate"}
               </button>
             </div>
           </div>

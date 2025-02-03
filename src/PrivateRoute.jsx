@@ -8,8 +8,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     return <div>Loading...</div>;
   }
 
-  console.log(user ? "User is logged in" : "User is not logged in");
-
   return user ? <Component /> : <Navigate to="/login" />;
 };
 

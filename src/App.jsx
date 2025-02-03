@@ -7,6 +7,7 @@ import Leads from "./Leads";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import PrivateRoute from "./PrivateRoute";
+import Terms from "./Terms";
 import "./App.css";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                 element={<PrivateRoute component={UserDetails} />}
               />
               <Route path="/login" element={<Login />} />
+              <Route path="/terms" element={<Terms />} />
             </Routes>
           </main>
           <Footer />
