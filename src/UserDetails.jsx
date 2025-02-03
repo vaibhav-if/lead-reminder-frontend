@@ -2,9 +2,7 @@ import { useState } from "react";
 import { useUser } from "./UserContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-const SERVER_PORT = process.env.SERVER_PORT;
-const SERVER_URL = `http://localhost:${SERVER_PORT}`;
+import API_BASE_URL from "./config";
 
 // Regex pattern for validating Indian mobile numbers (Refactor to common file)
 const mobilePattern = /^[6-9]\d{9}$/;
@@ -24,7 +22,7 @@ function UserDetails() {
 
     try {
       const response = await axios.put(
-        `${SERVER_URL}/users/${user?.id}`,
+        `${API_BASE_URL}/users/${user?.id}`,
         updatedUser
       );
       setUser(response.data);
@@ -48,7 +46,7 @@ function UserDetails() {
     if (confirmDeactivate) {
       setIsDeactivating(true);
       try {
-        await axios.patch(`${SERVER_URL}/users/${user?.id}/deactivate`);
+        await axios.patch(`${API_BASE_URL}/users/${user?.id}/deactivate`);
         console.log("deactivated");
         logout();
         navigate("/login");

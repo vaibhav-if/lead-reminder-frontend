@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useUser } from "./UserContext";
 import axios from "axios";
-
-const SERVER_PORT = process.env.SERVER_PORT;
-const SERVER_URL = `http://localhost:${SERVER_PORT}`;
+import API_BASE_URL from "./config";
 
 function Leads() {
   const { user } = useUser();
@@ -36,7 +34,7 @@ function Leads() {
         console.error("User ID is not available.");
         return;
       }
-      const response = await axios.get(`${SERVER_URL}/users/${userId}/leads`);
+      const response = await axios.get(`${API_BASE_URL}/users/${userId}/leads`);
       setLeads(response.data);
     } catch (error) {
       console.error("Error fetching leads");
@@ -94,7 +92,7 @@ function Leads() {
 
   const createLead = async (lead, userId) => {
     try {
-      const response = await axios.post(`${SERVER_URL}/leads`, {
+      const response = await axios.post(`${API_BASE_URL}/leads`, {
         ...lead,
         userId,
       });
@@ -109,7 +107,7 @@ function Leads() {
 
   const updateLead = async (id, lead, userId) => {
     try {
-      const response = await axios.put(`${SERVER_URL}/leads/${id}`, {
+      const response = await axios.put(`${API_BASE_URL}/leads/${id}`, {
         ...lead,
         userId,
       });
@@ -148,7 +146,7 @@ function Leads() {
     try {
       // Soft delete by marking the lead inactive
       const response = await axios.patch(
-        `${SERVER_URL}/leads/${id}/deactivate`
+        `${API_BASE_URL}/leads/${id}/deactivate`
       );
       setLeads((prevLeads) =>
         prevLeads.map((lead) => (lead.id === id ? response.data : lead))

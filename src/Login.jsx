@@ -3,11 +3,9 @@ import { useUser } from "./UserContext";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import axios from "axios";
+import API_BASE_URL from "./config";
 
 axios.defaults.withCredentials = true;
-
-const SERVER_PORT = process.env.SERVER_PORT;
-const SERVER_URL = `http://localhost:${SERVER_PORT}`;
 
 function Login() {
   const { setUser } = useUser();
@@ -50,7 +48,7 @@ function Login() {
           setErrorMessage("Please enter the verification code.");
           return;
         }
-        const response = await axios.post(`${SERVER_URL}/users/login`, {
+        const response = await axios.post(`${API_BASE_URL}/users/login`, {
           email,
           mobile,
           otp,
@@ -77,7 +75,7 @@ function Login() {
       setIsSendingOtp(true);
       try {
         const recaptchaToken = await recaptchaRef.current.getValue();
-        await axios.post(`${SERVER_URL}/users/send-otp`, {
+        await axios.post(`${API_BASE_URL}/users/send-otp`, {
           email,
           mobile,
           recaptchaToken,
