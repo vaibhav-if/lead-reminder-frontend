@@ -154,6 +154,8 @@
   textarea,
   select {
     /* width: 100%; */
+    -webkit-appearance: none;
+    -moz-appearance: none;
     padding: calc(var(--spacing) * 2);
     border-radius: var(--radius-lg);
     border: 1px solid var(--color-text-light);

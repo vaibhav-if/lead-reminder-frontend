@@ -98,9 +98,7 @@ function Leads() {
       });
       setLeads((prevLeads) => [...prevLeads, response.data]);
     } catch (error) {
-      setErrorMessage(
-        "Error adding lead, please make sure to enter unique phone numbers"
-      );
+      setErrorMessage("Error adding lead.");
       console.error("Error adding lead:");
     }
   };
@@ -115,14 +113,13 @@ function Leads() {
         prevLeads.map((lead) => (lead.id === id ? response.data : lead))
       );
     } catch (error) {
-      setErrorMessage(
-        "Error updating lead, please make sure to enter unique phone numbers"
-      );
+      setErrorMessage("Error updating lead.");
       console.error("Error updating lead:");
     }
   };
 
   const handleEditLead = (leadId) => {
+    setErrorMessage("");
     setNewLead(leads.find((lead) => lead.id === leadId));
     setEditId(leadId);
   };
@@ -140,6 +137,7 @@ function Leads() {
       meeting_date: "",
       meeting_notes: "",
     });
+    setErrorMessage("");
   };
 
   const handleDeleteLead = async (id) => {
