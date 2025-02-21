@@ -1,8 +1,8 @@
 function Terms() {
   return (
     <>
-      <div class="flex justify-center">
-        <div class="container mx-auto px-4 w-11/12 md:w-4/5 lg:w-3/5">
+      <div className="flex justify-center">
+        <div className="container mx-auto px-4 w-11/12 md:w-4/5 lg:w-3/5">
           <h2>Terms and Conditions:</h2>
 
           <h3>1. Acceptance of Terms</h3>
@@ -10,7 +10,7 @@ function Terms() {
             By signing in you also create an account with us, if an account
             doesn't already exist. You also opt to receive emails on registered
             Email address, and messages on WhatsApp if a valid Indian mobile
-            number is provided.
+            number is provided. <i>WhatsApp Integration is <strong>disabled</strong> currently, stay tuned for further updates.</i>
           </p>
 
           <h3>2. User Registration</h3>

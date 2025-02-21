@@ -256,15 +256,15 @@ function Leads() {
         <table className="w-full text-left min-w-max table-fixed min-h-50">
           <thead>
             <tr>
-              <th className="w-1/6 p-4 border-b">
-                <p className="block leading-none">Name</p>
+              <th className="w-1/3 p-4 border-b">
+                <p className="block leading-none">Details</p>
               </th>
-              <th className="w-1/6 p-4 border-b">
+              {/* <th className="w-1/6 p-4 border-b">
                 <p className="block leading-none">Mobile</p>
               </th>
               <th className="w-1/3 p-4 border-b">
                 <p className="block leading-none">Email</p>
-              </th>
+              </th> */}
               <th className="w-1/6 p-4 border-b">
                 <p className="block leading-none">Meeting Date</p>
               </th>
@@ -277,7 +277,7 @@ function Leads() {
             </tr>
           </thead>
           <tbody>
-            {filteredLeads.map((lead, index) => (
+            {filteredLeads.map((lead) => (
               <tr key={lead.id}>
                 {editId === lead.id ? (
                   <>
@@ -285,13 +285,32 @@ function Leads() {
                       <input
                         type="text"
                         value={newLead.name}
+                        placeholder="Lead Name"
                         onChange={(e) =>
                           setNewLead({ ...newLead, name: e.target.value })
+                        }
+                        className="w-full mb-1"
+                      />
+                      <input
+                        type="text"
+                        value={newLead.mobile}
+                        placeholder="Lead Mobile"
+                        onChange={(e) =>
+                          setNewLead({ ...newLead, mobile: e.target.value })
+                        }
+                        className="w-full mb-1"
+                      />
+                      <input
+                        type="email"
+                        value={newLead.email}
+                        placeholder="Lead Email"
+                        onChange={(e) =>
+                          setNewLead({ ...newLead, email: e.target.value })
                         }
                         className="w-full"
                       />
                     </td>
-                    <td className="p-4 border-b border-slate-200">
+                    {/* <td className="p-4 border-b border-slate-200">
                       <input
                         type="text"
                         value={newLead.mobile}
@@ -310,7 +329,7 @@ function Leads() {
                         }
                         className="w-full"
                       />
-                    </td>
+                    </td> */}
                     <td className="p-4 border-b border-slate-200">
                       <input
                         type="date"
@@ -395,9 +414,13 @@ function Leads() {
                         lead.is_active ? "" : "line-through"
                       }`}
                     >
-                      <p className="">{lead.name}</p>
+                      <p className="mb-1">{lead.name}</p>
+                      <p className="mb-1">{lead.mobile}</p>
+                      <p className="whitespace-normal break-all">
+                        {lead.email}
+                      </p>
                     </td>
-                    <td
+                    {/* <td
                       className={`p-4 border-b border-slate-200 ${
                         lead.is_active ? "" : "line-through"
                       }`}
@@ -412,7 +435,7 @@ function Leads() {
                       <p className="whitespace-normal break-all">
                         {lead.email}
                       </p>
-                    </td>
+                    </td> */}
                     <td
                       className={`p-4 border-b border-slate-200 ${
                         lead.is_active ? "" : "line-through"

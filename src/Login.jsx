@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { useUser } from "./UserContext";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -9,7 +9,7 @@ axios.defaults.withCredentials = true;
 
 function Login() {
   const { setUser } = useUser();
-  const [mobile, setMobile] = useState("");
+  // const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [isInactiveUser, setIsInactiveUser] = useState(false);
@@ -22,17 +22,17 @@ function Login() {
   const navigate = useNavigate();
 
   // Regex pattern for validating Indian mobile numbers
-  const mobilePattern = /^[6-9]\d{9}$/;
+  // const mobilePattern = /^[6-9]\d{9}$/;
 
   const handleLogin = async () => {
     // if (!mobile) {
     //   setErrorMessage("Mobile number is mandatory.");
     //   return;
     // }
-    if (!mobilePattern.test(mobile)) {
-      setErrorMessage("Please enter a valid Indian mobile number.");
-      return;
-    }
+    // if (!mobilePattern.test(mobile)) {
+    //   setErrorMessage("Please enter a valid Indian mobile number.");
+    //   return;
+    // }
     if (!email) {
       setErrorMessage("Email address is mandatory.");
       return;
@@ -50,7 +50,7 @@ function Login() {
         }
         const response = await axios.post(`${API_BASE_URL}/users/login`, {
           email,
-          mobile,
+          // mobile,
           otp,
         });
         if (response.data) {
@@ -77,7 +77,7 @@ function Login() {
         const recaptchaToken = await recaptchaRef.current.getValue();
         await axios.post(`${API_BASE_URL}/users/send-otp`, {
           email,
-          mobile,
+          // mobile,
           recaptchaToken,
         });
         setIsOtpSent(true);
@@ -108,13 +108,13 @@ function Login() {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             stroke="currentColor"
-            class="size-6"
+            className="size-6"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
             />
           </svg>
@@ -148,7 +148,7 @@ function Login() {
                 />
               </div>
             </div>
-            <div>
+            {/* <div>
               <label htmlFor="mobile" className="block  font-medium ">
                 Mobile Number
               </label>
@@ -176,7 +176,7 @@ function Login() {
                   </p>
                 )}
               </div>
-            </div>
+            </div> */}
             {isOtpSent && (
               <div>
                 <label htmlFor="otp" className="block  font-medium ">
@@ -235,7 +235,7 @@ function Login() {
             <small>
               {isOtpSent
                 ? "OTP has been sent on Email"
-                : "OTP will be sent on Email."}
+                : ""}
             </small>
           </p>
           <p className="text-justify">
@@ -247,7 +247,7 @@ function Login() {
               .
             </small>
           </p>
-          <p className="text-justify">
+          {/* <p className="text-justify">
             <small className="flex items-center gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -266,7 +266,7 @@ function Login() {
               WhatsApp Integration will be live soon, stay tuned for further
               updates
             </small>
-          </p>
+          </p> */}
         </div>
       </div>
     </>
