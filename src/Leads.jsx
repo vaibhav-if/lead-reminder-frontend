@@ -257,7 +257,7 @@ function Leads() {
           <thead>
             <tr>
               <th className="w-1/3 p-4 border-b">
-                <p className="block leading-none">Details</p>
+                <p className="block leading-none">Lead Details</p>
               </th>
               {/* <th className="w-1/6 p-4 border-b">
                 <p className="block leading-none">Mobile</p>
